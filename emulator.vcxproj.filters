@@ -18,9 +18,21 @@
     <ClCompile Include="main.cpp">
       <Filter>File di origine</Filter>
     </ClCompile>
+    <ClCompile Include="opcodes.cpp">
+      <Filter>File di risorse</Filter>
+    </ClCompile>
+    <ClCompile Include="machine.cpp">
+      <Filter>File di risorse</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="opcodes.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
     <ClInclude Include="machine.h">
+      <Filter>File di intestazione</Filter>
+    </ClInclude>
+    <ClInclude Include="types.h">
       <Filter>File di intestazione</Filter>
     </ClInclude>
   </ItemGroup>
