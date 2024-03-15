@@ -1,16 +1,17 @@
 #pragma once
 
 #include "types.h"
+#include "machine.cpp"
 using namespace nstdtypes;
 
 class Opcodes {
 	public:
 		// Stessa logica, crea un overload
-		void ExecuteOpcodes(Byte, Byte, Byte, Word, Word);
+		void ExecuteOpcodes(LR35902, Byte, Byte, Byte, Word, Word);
 
 	private:
 		void NOP();
-		void LD_BC_WORDDATA();
+		void LD_BC_WORDDATA(LR35902&, Word);
 		void LD_FF00BC_A();
 		void INC_BC();
 		void INC_B();

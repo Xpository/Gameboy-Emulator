@@ -1,15 +1,21 @@
 #include "types.h"
 #include "opcodes.h"
+#include "machine.cpp"
 
 using namespace nstdtypes;
 
-
-void Opcodes::ExecuteOpcodes(Byte opcode, Byte operand1 = 0x00, Byte operand2 = 0x00, Word wordop1 = 0x0000, Word wordop2 = 0x0000) {
+// Creare un overload di questa funzione perche e' obrobriosa
+void Opcodes::ExecuteOpcodes(LR35902 machine, Byte opcode, Byte operand1 = 0x00, Byte operand2 = 0x00, Word wordop1 = 0x0000, Word wordop2 = 0x0000) {
 	switch (opcode)
 	{
 	case 0x00:
+		NOP();
 		break;
 	case 0x01:
+		LD_BC_WORDDATA(machine);
+		break;
+	case 0x02:
+		LD_FF00BC_A();
 		break;
 	}
 }
@@ -21,8 +27,9 @@ void Opcodes::NOP()
 	return;
 }
 
-void Opcodes::LD_BC_WORDDATA()
+void Opcodes::LD_BC_WORDDATA(LR35902 &machine, Word data)
 {
+	machine.UpdateRegister(data, 'B', 'C');
 }
 
 void Opcodes::LD_FF00BC_A()

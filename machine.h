@@ -46,7 +46,14 @@ class LR35902 {
 		*/
 
 
+		Byte ExtractUpper(Word);
+		Byte ExtractLower(Word);
+
 	public:
 		LR35902();
+
+		
+		void UpdateRegister(Byte, char);
+		void UpdateRegister(Word, char, char);
 };
 
