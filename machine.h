@@ -45,11 +45,11 @@ class LR35902 {
 					(che hanno 4 cifre) e l'uso per le operazioni INC/DEC (che non influiscono sul flag C) ha dei limiti.
 		*/
 		
-		bool zf;
-		bool cf;
+		bool ZF;
+		bool CF;
 		
-		bool nf;
-		bool hf;
+		bool NF;
+		bool HF;
 
 
 		Byte ExtractUpper(Word);

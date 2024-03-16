@@ -22,11 +22,11 @@ LR35902::LR35902()
 	SP = 0x0000;
 	PC = 0x0000;
 
-	zf = false;
-	cf = false;
+	ZF = false;
+	CF = false;
 
-	nf = false;
-	hf = false;
+	NF = false;
+	HF = false;
 	
 }
 
@@ -68,19 +68,19 @@ void LR35902::UpdateFlag(char f,bool state)
 {
 	switch (f){
 	case 'z':
-		zf=state;
+		ZF = state;
 		break;
 	case 'c':
-		cf=state;
+		CF = state;
 		break;
 	case 'n':
-		nf=state;
+		NF = state;
 		break;
 	case 'h':
-		hf=state;
+		HF = state;
 		break;
-	case default:
-		std::cerr<<"CompileTimeError_FlagNotFound";
+	default:
+		std::cerr << "CompileTimeError_FlagNotFound"; // Sembra troppo professionale infatti non l'ho scritto io
 		break;
 	}
 }
@@ -88,22 +88,15 @@ void LR35902::UpdateFlag(char f,bool state)
 
 void LR35902::UpdateRegister(Word data, std::string rx)
 {
-	switch(rx)
-	case "BC":
+	if(rx == "BC"){
 		B = ExtractUpper(data);
-  C = ExtractLower(data);
-		break;
-	case "DE":
+		C = ExtractLower(data);
+	}else if(rx == "DE"){
 		D = ExtractUpper(data);
-  E = ExtractLower(data);
-		break;
-	case "HL":
+		E = ExtractLower(data);
+	}else if(rx == "HL"){
 		H = ExtractUpper(data);
-  L = ExtractLower(data);
-		break;
-	default:
-		std::cerr << "Come cazzo hai fatto a sbagliare registro?\n";
-		break;
+		L = ExtractLower(data);
 	}
 }
 
