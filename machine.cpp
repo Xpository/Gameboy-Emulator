@@ -55,58 +55,20 @@ void LR35902::UpdateRegister(Byte data, char r1)
 }
 
 // Inserisci prima l'alto poi il basso, vedi di non sbagliare registri...
-void LR35902::UpdateRegister(Word data, char r1, char r2)
+void LR35902::UpdateRegister(Word data, std::string rx)
 {
-	switch (r1)
-	{
-	case 'A':
-		A = ExtractUpper(data);
-		break;
-	case 'B':
+	switch(rx)
+	case 'BC':
 		B = ExtractUpper(data);
+  C = ExtractLower(data);
 		break;
-	case 'C':
-		C = ExtractUpper(data);
-		break;
-	case 'D':
+	case 'DE':
 		D = ExtractUpper(data);
+  E = ExtractLower(data);
 		break;
-	case 'E':
-		E = ExtractUpper(data);
-		break;
-	case 'H':
+	case 'HL':
 		H = ExtractUpper(data);
-		break;
-	case 'L':
-		L = ExtractUpper(data);
-		break;
-	default:
-		std::cerr << "Come cazzo hai fatto a sbagliare registro?\n";
-		break;
-	}
-
-	switch (r2)
-	{
-	case 'A':
-		A = ExtractLower(data);
-		break;
-	case 'B':
-		B = ExtractLower(data);
-		break;
-	case 'C':
-		C = ExtractLower(data);
-		break;
-	case 'D':
-		D = ExtractLower(data);
-		break;
-	case 'E':
-		E = ExtractLower(data);
-		break;
-	case 'H':
-		H = ExtractLower(data);
-		break;
-	case 'L':
-		L = ExtractLower(data);
+  L = ExtractLower(data);
 		break;
 	default:
 		std::cerr << "Come cazzo hai fatto a sbagliare registro?\n";
@@ -116,7 +78,7 @@ void LR35902::UpdateRegister(Word data, char r1, char r2)
 
 Byte LR35902::ExtractUpper(Word data)
 {
-	Byte highByte = (data >> 8) & 0xFF; // Estrai il byte pi˘ significativo
+	Byte highByte = (data >> 8) & 0xFF; // Estrai il byte pi√π significativo
 	return highByte;
 }
 
