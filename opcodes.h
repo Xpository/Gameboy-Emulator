@@ -6,7 +6,7 @@ using namespace nstdtypes;
 
 class Opcodes {
 	public:
-		// Opcode a 1 operando byte
+		// Opcode a 0 operandi byte
 		void ExecuteOpcodes(LR35902&, Byte);
 		// Opcode a 1 operando byte (registro h/l)
 		void ExecuteOpcodes(LR35902&, Byte, Byte);
@@ -22,7 +22,7 @@ class Opcodes {
 		void NOP();
 		void LD_BC_WORDDATA(LR35902&, Word);
 		void LD_FF00BC_A();
-		void INC_BC();
+		void INC_BC(LR35902);
 		void INC_B();
 		void DEC_B();
 		void LD_B_BYTEDATA();

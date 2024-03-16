@@ -1,6 +1,7 @@
 #include "machine.h"
 #include "types.h"
 #include <iostream>
+#include <string>
 
 
 LR35902::LR35902()
@@ -27,13 +28,13 @@ LR35902::LR35902()
 
 	NF = false;
 	HF = false;
-	
+
 }
 
 // Scrivile in maiuscolo
 void LR35902::UpdateRegister(Byte data, char r1)
 {
-	switch (r1){
+	switch (r1) {
 	case 'A':
 		A = data;
 		break;
@@ -56,7 +57,7 @@ void LR35902::UpdateRegister(Byte data, char r1)
 		L = data;
 		break;
 	default:
-		std::cerr << "Come cazzo hai fatto a sbagliare registro?\n";
+		std::cerr << "RunTimeError_FlagNotFound";
 		break;
 	}
 }
@@ -67,7 +68,7 @@ void LR35902::UpdateRegister(Byte data, char r1)
 
 void LR35902::UpdateFlag(char f, bool state)
 {
-	switch (f){
+	switch (f) {
 	case 'z':
 		ZF = state;
 		break;
@@ -81,7 +82,7 @@ void LR35902::UpdateFlag(char f, bool state)
 		HF = state;
 		break;
 	default:
-		std::cerr << "CompileTimeError_FlagNotFound"; // Sembra troppo professionale infatti non l'ho scritto io
+		std::cerr << "RunTimeError_FlagNotFound"; // Sembra troppo professionale infatti non l'ho scritto io
 		break;
 	}
 }
@@ -89,30 +90,43 @@ void LR35902::UpdateFlag(char f, bool state)
 
 void LR35902::UpdateRegister(Word data, std::string rx)
 {
-	if(rx == "BC"){
+	if (rx == "BC") {
 		B = ExtractUpper(data);
 		C = ExtractLower(data);
-	}else if(rx == "DE"){
+	}
+	else if (rx == "DE") {
 		D = ExtractUpper(data);
 		E = ExtractLower(data);
-	}else if(rx == "HL"){
+	}
+	else if (rx == "HL") {
 		H = ExtractUpper(data);
 		L = ExtractLower(data);
 	}
 }
 
-// Inserisci il carattere in minuscolo
+// Inserisci il carattere in maiuscolo
 Byte LR35902::GetRegister(char c)
 {
-    switch (c)
+	switch (c)
 	{
-	case 'a':
-		/* code */
-		break;
-	
+	case 'A':
+		return A;
+	case 'B':
+		return B;
+	case 'C':
+		return C;
+	case 'D':
+		return D;
+	case 'E':
+		return E;
+	case 'H':
+		return H;
+	case 'L':
+		return L;
 	default:
-		break;
+		std::cerr << "RunTimeError_RegisterNotFound\n";
 	}
+	return 0x00;
 }
 
 Byte LR35902::ExtractUpper(Word data)

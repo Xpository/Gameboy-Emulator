@@ -50,8 +50,9 @@ void Opcodes::LD_FF00BC_A()
 {
 }
 
-void Opcodes::INC_BC()
+void Opcodes::INC_BC(LR35902 machine)
 {
+	machine.UpdateRegister(machine.GetRegister('B') + machine.GetRegister('C') + 1, "BC");
 }
 
 void Opcodes::INC_B()
