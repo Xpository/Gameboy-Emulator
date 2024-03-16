@@ -64,7 +64,7 @@ void LR35902::UpdateRegister(Byte data, char r1)
 
 // Inserisci prima l'alto poi il basso, vedi di non sbagliare registri...
 
-void LR35902::UpdateFlag(char f,bool state)
+void LR35902::UpdateFlag(char f, bool state)
 {
 	switch (f){
 	case 'z':
@@ -97,6 +97,20 @@ void LR35902::UpdateRegister(Word data, std::string rx)
 	}else if(rx == "HL"){
 		H = ExtractUpper(data);
 		L = ExtractLower(data);
+	}
+}
+
+// Inserisci il carattere in minuscolo
+Byte LR35902::GetRegister(char c)
+{
+    switch (c)
+	{
+	case 'a':
+		/* code */
+		break;
+	
+	default:
+		break;
 	}
 }
 

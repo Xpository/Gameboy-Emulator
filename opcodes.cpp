@@ -4,23 +4,37 @@
 
 using namespace nstdtypes;
 
-// Creare un overload di questa funzione perche e' obrobriosa
-void Opcodes::ExecuteOpcodes(LR35902 machine, Byte opcode, Byte operand1 = 0x00, Byte operand2 = 0x00, Word wordop1 = 0x0000, Word wordop2 = 0x0000) {
-	switch (opcode)
+void Opcodes::ExecuteOpcodes(LR35902 &machine, Byte opcode)
+{
+	switch(opcode)
 	{
-	case 0x00:
-		NOP();
-		break;
-	case 0x01:
-		LD_BC_WORDDATA(machine);
-		break;
-	case 0x02:
-		LD_FF00BC_A();
-		break;
+		case 0x00:
+			NOP();
+			break;
 	}
 }
 
+void Opcodes::ExecuteOpcodes(LR35902 &machine, Byte opcode , Byte operand1)
+{
+}
 
+void Opcodes::ExecuteOpcodes(LR35902 &machine, Byte opcode, Word operand1)
+{
+	switch (opcode)
+	{
+		case 0x01:
+			LD_BC_WORDDATA(machine, operand1);
+			break;
+	}
+}
+
+void Opcodes::ExecuteOpcodes(LR35902 &machine, Byte opcode, Byte operand1, Byte operand2)
+{
+}
+
+void Opcodes::ExecuteOpcodes(LR35902 &machine, Byte opcode, Word operand1, Word operand2)
+{
+}
 
 void Opcodes::NOP()
 {
