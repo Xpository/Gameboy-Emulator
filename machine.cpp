@@ -30,6 +30,7 @@ LR35902::LR35902()
 	
 }
 
+// Scrivile in maiuscolo
 void LR35902::UpdateRegister(Byte data, char r1)
 {
 	switch (r1){
