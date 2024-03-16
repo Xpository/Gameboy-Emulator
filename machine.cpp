@@ -71,13 +71,13 @@ void LR35902::UpdateFlag(char f,bool state)
 		zf=state;
 		break;
 	case 'c':
-		f=state;
+		cf=state;
 		break;
 	case 'n':
-
+		nf=state;
 		break;
 	case 'h':
-
+		hf=state;
 		break;
 	case default:
 		std::cerr<<"CompileTimeError_FlagNotFound";
