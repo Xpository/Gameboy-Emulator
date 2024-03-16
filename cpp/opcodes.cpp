@@ -1,6 +1,6 @@
-#include "types.h"
-#include "opcodes.h"
-#include "machine.cpp"
+#include "../headers/types.h"
+#include "../headers/opcodes.h"
+#include "../headers/LR35902.h"
 
 using namespace nstdtypes;
 

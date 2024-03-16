@@ -1,5 +1,5 @@
 #include <iostream>
-#include "machine.cpp"
+#include "cpp/machine.cpp"
 
 int main() {
 	return 0;

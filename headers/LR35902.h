@@ -2,8 +2,6 @@
 
 #include "types.h"
 #include <string>
-#include "types.h"
-
 using namespace nstdtypes;
 
 class LR35902 {

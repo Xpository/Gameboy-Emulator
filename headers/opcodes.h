@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "machine.h"
+#include "LR35902.h"
 using namespace nstdtypes;
 
 class Opcodes {

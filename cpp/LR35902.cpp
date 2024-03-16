@@ -1,5 +1,5 @@
-#include "machine.h"
-#include "types.h"
+#include "../headers/LR35902.h"
+#include "../headers/bus.h"
 #include <iostream>
 #include <string>
 
