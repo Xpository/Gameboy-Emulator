@@ -32,8 +32,7 @@ LR35902::LR35902()
 
 void LR35902::UpdateRegister(Byte data, char r1)
 {
-	switch (r1)
-	{
+	switch (r1){
 	case 'A':
 		A = data;
 		break;
