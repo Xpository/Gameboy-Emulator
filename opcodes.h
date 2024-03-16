@@ -1,7 +1,7 @@
 #pragma once
 
 #include "types.h"
-#include "machine.cpp"
+#include "machine.h"
 using namespace nstdtypes;
 
 class Opcodes {
@@ -22,7 +22,7 @@ class Opcodes {
 		void NOP();
 		void LD_BC_WORDDATA(LR35902&, Word);
 		void LD_FF00BC_A();
-		void INC_BC(LR35902);
+		void INC_BC(LR35902&);
 		void INC_B();
 		void DEC_B();
 		void LD_B_BYTEDATA();

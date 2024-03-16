@@ -16,6 +16,7 @@ void Opcodes::ExecuteOpcodes(LR35902 &machine, Byte opcode)
 
 void Opcodes::ExecuteOpcodes(LR35902 &machine, Byte opcode , Byte operand1)
 {
+	return;
 }
 
 void Opcodes::ExecuteOpcodes(LR35902 &machine, Byte opcode, Word operand1)
@@ -30,6 +31,7 @@ void Opcodes::ExecuteOpcodes(LR35902 &machine, Byte opcode, Word operand1)
 
 void Opcodes::ExecuteOpcodes(LR35902 &machine, Byte opcode, Byte operand1, Byte operand2)
 {
+	return;
 }
 
 void Opcodes::ExecuteOpcodes(LR35902 &machine, Byte opcode, Word operand1, Word operand2)
@@ -50,10 +52,13 @@ void Opcodes::LD_FF00BC_A()
 {
 }
 
-void Opcodes::INC_BC(LR35902 machine)
+void Opcodes::INC_BC(LR35902& machine)
 {
-	machine.UpdateRegister(machine.GetRegister('B') + machine.GetRegister('C') + 1, "BC");
+	machine.UpdateRegister(Word(machine.GetRegister('B') + machine.GetRegister('C') + 1), "BC");
+	
 }
+
+
 
 void Opcodes::INC_B()
 {
