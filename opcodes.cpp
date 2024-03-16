@@ -11,9 +11,10 @@ void Opcodes::ExecuteOpcodes(LR35902 &machine, Byte opcode)
 		case 0x00:
 			NOP();
 			break;
+
 	}
 }
-
+ 
 void Opcodes::ExecuteOpcodes(LR35902 &machine, Byte opcode , Byte operand1)
 {
 	return;
@@ -52,16 +53,16 @@ void Opcodes::LD_FF00BC_A()
 {
 }
 
-void Opcodes::INC_BC(LR35902& machine)
+void Opcodes::INC_BC(LR35902 &machine)
 {
 	machine.UpdateRegister(Word(machine.GetRegister('B') + machine.GetRegister('C') + 1), "BC");
-	
 }
 
 
 
-void Opcodes::INC_B()
+void Opcodes::INC_B(LR35902 &machine)
 {
+	machine.UpdateRegister(Byte(machine.GetRegister('B') + 1), "BC");
 }
 
 void Opcodes::DEC_B()
