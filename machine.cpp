@@ -24,6 +24,9 @@ LR35902::LR35902()
 
 	zf = false;
 	cf = false;
+
+	nf = false;
+	hf = false;
 	
 }
 
@@ -64,23 +67,23 @@ void LR35902::UpdateRegister(Byte data, char r1)
 
 void LR35902::UpdateFlag(char f,bool state)
 {
-		switch (f){
-					case 'z':
-							zf=state;
-							break;
-					case 'c':
-							f=state;
-							break;
-					case 'n':
+	switch (f){
+		case 'z':
+		zf=state;
+		break;
+	case 'c':
+		f=state;
+		break;
+	case 'n':
 
-							break;
-					case 'h':
+		break;
+	case 'h':
 
-							break;
-					case default:
-							std::cerr<<"CompileTimeError_FlagNotFound";
-						 break;
-		}
+		break;
+	case default:
+		std::cerr<<"CompileTimeError_FlagNotFound";
+		break;
+	}
 }
 
 
