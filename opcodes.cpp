@@ -29,7 +29,7 @@ void Opcodes::NOP()
 
 void Opcodes::LD_BC_WORDDATA(LR35902 &machine, Word data)
 {
-	machine.UpdateRegister(data, 'B', 'C');
+	machine.UpdateRegister(data, "BC");
 }
 
 void Opcodes::LD_FF00BC_A()
