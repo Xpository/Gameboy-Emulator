@@ -21,6 +21,8 @@ LR35902::LR35902()
 
 	SP = 0x0000;
 	PC = 0x0000;
+
+zf = false;
 }
 
 void LR35902::UpdateRegister(Byte data, char r1)
