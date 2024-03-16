@@ -67,7 +67,7 @@ void LR35902::UpdateRegister(Byte data, char r1)
 void LR35902::UpdateFlag(char f,bool state)
 {
 	switch (f){
-		case 'z':
+	case 'z':
 		zf=state;
 		break;
 	case 'c':
