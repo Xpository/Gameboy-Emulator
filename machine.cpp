@@ -58,15 +58,15 @@ void LR35902::UpdateRegister(Byte data, char r1)
 void LR35902::UpdateRegister(Word data, std::string rx)
 {
 	switch(rx)
-	case 'BC':
+	case "BC":
 		B = ExtractUpper(data);
   C = ExtractLower(data);
 		break;
-	case 'DE':
+	case "DE":
 		D = ExtractUpper(data);
   E = ExtractLower(data);
 		break;
-	case 'HL':
+	case "HL":
 		H = ExtractUpper(data);
   L = ExtractLower(data);
 		break;
