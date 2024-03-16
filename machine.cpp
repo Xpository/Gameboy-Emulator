@@ -54,7 +54,19 @@ void LR35902::UpdateRegister(Byte data, char r1)
 	}
 }
 
+
+
 // Inserisci prima l'alto poi il basso, vedi di non sbagliare registri...
+
+void LR35902::UpdateFlag(char f)
+{
+		switch (f){
+					case 
+
+		};
+}
+
+
 void LR35902::UpdateRegister(Word data, std::string rx)
 {
 	switch(rx)
