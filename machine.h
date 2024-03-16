@@ -62,6 +62,6 @@ class LR35902 {
 		void UpdateRegister(Byte, char);
 		void UpdateRegister(Word, std::string);
 		
-		void UpdateFlag(char);
+		void UpdateFlag(char, bool);
 };
 
