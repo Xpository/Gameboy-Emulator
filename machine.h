@@ -44,6 +44,12 @@ class LR35902 {
 					Poiche' esistono solo due flag (C e H) per indicare i riporti dei cifre BCD, DAA e' inefficace per operazioni a 16 bit
 					(che hanno 4 cifre) e l'uso per le operazioni INC/DEC (che non influiscono sul flag C) ha dei limiti.
 		*/
+		
+		bool zf;
+		bool cf;
+		
+		bool nf;
+		bool hf;
 
 
 		Byte ExtractUpper(Word);
