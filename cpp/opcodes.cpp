@@ -49,8 +49,12 @@ void Opcodes::LD_BC_WORDDATA(LR35902 &machine, Word data)
 	machine.UpdateRegister(data, "BC");
 }
 
-void Opcodes::LD_FF00BC_A()
+void Opcodes::LD_ADDRESSOFBC_A(LR35902 &machine)
 {
+	Byte A = machine.GetRegister('A');
+	Word BC = machine.GetRegister('B') + machine.GetRegister('C');
+
+	// Finire implementazione quando la memoria sara' finita.
 }
 
 void Opcodes::INC_BC(LR35902 &machine)
@@ -62,22 +66,25 @@ void Opcodes::INC_BC(LR35902 &machine)
 
 void Opcodes::INC_B(LR35902 &machine)
 {
-	machine.UpdateRegister(Byte(machine.GetRegister('B') + 1), "BC");
+	machine.UpdateRegister(Byte(machine.GetRegister('B') + 1), "B");
 }
 
-void Opcodes::DEC_B()
+void Opcodes::DEC_B(LR35902 &machine)
 {
+	machine.UpdateRegister(Byte(machine.GetRegister('B') - 1), "B");
+
 }
 
-void Opcodes::LD_B_BYTEDATA()
+void Opcodes::LD_B_BYTEDATA(LR35902 &machine, Byte data)
 {
+	machine.UpdateRegister(data, 'B');
 }
 
 void Opcodes::RLCA()
 {
 }
 
-void Opcodes::LD_FF00WORDADDRESS_STACKPOINTER()
+void Opcodes::LD_ADDRESSOFWORD_STACKPOINTER()
 {
 }
 

@@ -21,13 +21,13 @@ class Opcodes {
 	private:
 		void NOP();
 		void LD_BC_WORDDATA(LR35902&, Word);
-		void LD_FF00BC_A();
+		void LD_ADDRESSOFBC_A(LR35902&);
 		void INC_BC(LR35902&);
 		void INC_B(LR35902&);
-		void DEC_B();
-		void LD_B_BYTEDATA();
+		void DEC_B(LR35902&);
+		void LD_B_BYTEDATA(LR35902&, Byte);
 		void RLCA();								// L'istruzione RLCA nel set di istruzioni del processore LR35902, usato nel Game Boy, e' un'operazione di rotazione a sinistra del registro A(l'accumulatore) attraverso il carry flag. Questo significa che il bit piu' significativo (MSB) del registro A viene spostato nella posizione del bit meno significativo (LSB) e anche nel carry flag. 
-		void LD_FF00WORDADDRESS_STACKPOINTER();
+		void LD_ADDRESSOFWORD_STACKPOINTER();
 		void ADD_HL_BC();
 		void LD_A_FF00BC();
 		void DEC_BC();

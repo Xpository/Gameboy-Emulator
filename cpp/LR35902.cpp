@@ -31,7 +31,11 @@ LR35902::LR35902()
 
 }
 
-// Scrivile in maiuscolo
+
+/* UpdateRegister modifica il valore di un registro
+*  @param1 dato con da inserire
+*  @param2 registro in maiuscolo
+*/ 
 void LR35902::UpdateRegister(Byte data, char r1)
 {
 	switch (r1) {
@@ -64,9 +68,11 @@ void LR35902::UpdateRegister(Byte data, char r1)
 
 
 
-// Inserisci prima l'alto poi il basso, vedi di non sbagliare registri...
-
-void LR35902::UpdateFlag(char f, bool state)
+/* UpdateFlag modifica il valore di una flag
+*  @param1 flag da modificare
+*  @param2 stato in cui modificarlo, inizalmente true
+*/ 
+void LR35902::UpdateFlag(char f, bool state = true)
 {
 	switch (f) {
 	case 'z':
@@ -87,7 +93,10 @@ void LR35902::UpdateFlag(char f, bool state)
 	}
 }
 
-
+/* UpdateRegister modifica il valore di un registro
+*  @param1 dato con da inserire
+*  @param2 registro in maiuscolo
+*/ 
 void LR35902::UpdateRegister(Word data, std::string rx)
 {
 	if (rx == "BC") {
@@ -104,7 +113,10 @@ void LR35902::UpdateRegister(Word data, std::string rx)
 	}
 }
 
-// Inserisci il carattere in maiuscolo
+/* GetRegister ritorna il valore di un dato registro
+*  @param1 registro da cui prendere il dato
+*  @return valore del registro
+*/ 
 Byte LR35902::GetRegister(char c)
 {
 	switch (c)
@@ -122,19 +134,29 @@ Byte LR35902::GetRegister(char c)
 	case 'H':
 		return H;
 	case 'L':
-		return L;
+		return L;									
 	default:
 		std::cerr << "RunTimeError_RegisterNotFound\n";
 	}
 	return 0x00;
 }
 
+// @Cyb3s, @0hM1C1uf1, @AleBitCode qualcuno crei qua la funzione GetFlag(char c) 
+
+/* ExtractUpper estra la parte superiore di una word
+*  @param1 word da cui estrarre il valore
+*  @return valore superiore
+*/ 
 Byte LR35902::ExtractUpper(Word data)
 {
 	Byte highByte = (data >> 8) & 0xFF; // Estrai il byte più significativo
 	return highByte;
 }
 
+/* ExtractUpper estra la parte inferiore di una word
+*  @param1 word da cui estrarre il valore
+*  @return valore inferiore
+*/ 
 Byte LR35902::ExtractLower(Word data)
 {
 	Byte lowByte = data & 0xFF; // Estrai il byte meno significativo
