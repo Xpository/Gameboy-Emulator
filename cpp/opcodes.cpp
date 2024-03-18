@@ -88,27 +88,32 @@ void Opcodes::LD_ADDRESSOFWORD_STACKPOINTER()
 {
 }
 
-void Opcodes::ADD_HL_BC()
+void Opcodes::ADD_HL_BC(LR35902 &machine)
 {
+	machine.UpdateRegister(machine.GetDoubleRegister("BC") + machine.GetDoubleRegister("BC"), 'HL');
 }
 
-void Opcodes::LD_A_FF00BC()
+void Opcodes::LD_A_ADDRESSOFBC(LR35902 &machine)
 {
+
 }
 
-void Opcodes::DEC_BC()
+void Opcodes::DEC_BC(LR35902 &machine)
 {
+	machine.UpdateRegister(Word(machine.GetRegister('B') + machine.GetRegister('C') - 1), "BC");
 }
 
-void Opcodes::INC_C()
+void Opcodes::INC_C(LR35902 &machine)
 {
+	machine.UpdateRegister(Byte(machine.GetRegister('C') + 1), "B");
 }
 
-void Opcodes::DEC_C()
+void Opcodes::DEC_C(LR35902 &machine)
 {
+	machine.UpdateRegister(Byte(machine.GetRegister('C') - 1), "B");
 }
 
-void Opcodes::LD_C_BYTEDATA()
+void Opcodes::LD_C_BYTEDATA(LR35902 &machine)
 {
 }
 

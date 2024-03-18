@@ -4,6 +4,7 @@
 #include <string>
 
 
+
 LR35902::LR35902()
 {
 	for (int i = 0; i < 0x200000; i++) {
@@ -33,7 +34,7 @@ LR35902::LR35902()
 
 
 /* UpdateRegister modifica il valore di un registro
-*  @param1 dato con da inserire
+*  @param1 dato byte da inserire
 *  @param2 registro in maiuscolo
 */ 
 void LR35902::UpdateRegister(Byte data, char r1)
@@ -94,7 +95,7 @@ void LR35902::UpdateFlag(char f, bool state = true)
 }
 
 /* UpdateRegister modifica il valore di un registro
-*  @param1 dato con da inserire
+*  @param1 dato word da inserire
 *  @param2 registro in maiuscolo
 */ 
 void LR35902::UpdateRegister(Word data, std::string rx)
@@ -141,29 +142,51 @@ Byte LR35902::GetRegister(char c)
 	return 0x00;
 }
 
+/* GetDoubleRegister ritorna una word con i registri RX
+ * @param1 2 caratteri che simboleggiano il registro
+ * @return La word data dalla somma di parte alta + parte bassa (0x0000)
+*/
+Word LR35902::GetDoubleRegister(std::string rx){
+	if (rx == "BC") {
+		Word highByte = (B << 8);
+		return highByte + C;
+	}
+	else if (rx == "DE") {
+		Word highByte = (D << 8);
+		return highByte + E;
+	}
+	else if (rx == "HL") {
+		Word highByte = (H << 8);
+		return highByte + L;
+	}
+   return 0x0000;
+}
+
+
 // @Cyb3s, @0hM1C1uf1, @AleBitCode qualcuno crei qua la funzione GetFlag(char c) [si tesoro]
 /* GetFlag ritorna il valore di un dato flag
 *  @param1 flag da cui prendere il dato
 *  @return valore del flag
 */ 
-Byte LR35902::GetFlag(char c)
+bool LR35902::GetFlag(char c)
 {
 	switch (c)
 	{
 	case 'Z':
-		return Z;
+		return ZF;
 	case 'C':
-		return C;
+		return CF;
 	case 'N':
-		return N;
+		return NF;
 	case 'H':
-		return H;							
+		return HF;							
 	default:
 		std::cerr << "RunTimeError_FlagNotFound\n";
 	}
-	return 0x00;
+	return false;
 }
-/* ExtractUpper estra la parte superiore di una word
+
+/* ExtractUpper estrae la parte superiore di una word
 *  @param1 word da cui estrarre il valore
 *  @return valore superiore
 */ 
@@ -173,7 +196,7 @@ Byte LR35902::ExtractUpper(Word data)
 	return highByte;
 }
 
-/* ExtractUpper estra la parte inferiore di una word
+/* ExtractUpper estrae la parte inferiore di una word
 *  @param1 word da cui estrarre il valore
 *  @return valore inferiore
 */ 

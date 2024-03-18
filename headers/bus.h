@@ -13,7 +13,7 @@ class Bus {
         ~Bus();
 
         LR35902 cpu;
-
+        
         std::array<Byte, 64 * 1024> ram  ;  // memoria fittizia 
 
         //Bus read & Write

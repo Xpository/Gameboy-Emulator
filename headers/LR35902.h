@@ -54,6 +54,7 @@ class LR35902 {
 
 		Byte ExtractUpper(Word);
 		Byte ExtractLower(Word);
+		
 
 	public:
 		LR35902();
@@ -61,9 +62,11 @@ class LR35902 {
 
 		void UpdateRegister(Byte, char);
 		void UpdateRegister(Word, std::string);
-
-		Byte GetRegister(char);
-
 		void UpdateFlag(char, bool);
+		
+		Byte GetRegister(char);
+        Word GetDoubleRegister(std::string rx);
+        Word GetRegister(std::string);
+        bool GetFlag(char);
 };
 
