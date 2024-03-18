@@ -7,7 +7,7 @@
 LR35902::LR35902()
 {
 	for (int i = 0; i < 0x200000; i++) {
-		this->Memory[i] = 0x00;
+		this->Memory[i] = 0x00;  //cartridges memories
 	}
 	A = 0x00;
 
