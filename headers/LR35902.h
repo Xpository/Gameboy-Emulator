@@ -60,8 +60,8 @@ class LR35902 {
 		LR35902();
 
 
-		void UpdateRegister(Byte, char);
-		void UpdateRegister(Word, std::string);
+		void UpdateRegister(Byte, char); // si updateta una parte del registro (basso o alto)
+		void UpdateRegister(Word, std::string); // si updateta l'intero registro (sia basso che alto)
 		void UpdateFlag(char, bool);
 		
 		Byte GetRegister(char);
