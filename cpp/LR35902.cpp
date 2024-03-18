@@ -163,7 +163,6 @@ Word LR35902::GetDoubleRegister(std::string rx){
 }
 
 
-// @Cyb3s, @0hM1C1uf1, @AleBitCode qualcuno crei qua la funzione GetFlag(char c) [si tesoro]
 /* GetFlag ritorna il valore di un dato flag
 *  @param1 flag da cui prendere il dato
 *  @return valore del flag
