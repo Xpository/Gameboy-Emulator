@@ -142,6 +142,27 @@ Byte LR35902::GetRegister(char c)
 }
 
 // @Cyb3s, @0hM1C1uf1, @AleBitCode qualcuno crei qua la funzione GetFlag(char c) 
+/* GetFlag ritorna il valore di un dato flag
+*  @param1 flag da cui prendere il dato
+*  @return valore del flag
+*/ 
+Byte LR35902::GetFlag(char c)
+{
+	switch (c)
+	{
+	case 'z':
+		return r;
+	case 'c':
+		return c;
+	case 'n':
+		return n;
+	case 'h':
+		return h;							
+	default:
+		std::cerr << "RunTimeError_FlagNotFound\n";
+	}
+	return 0x00;
+}
 
 /* ExtractUpper estra la parte superiore di una word
 *  @param1 word da cui estrarre il valore
