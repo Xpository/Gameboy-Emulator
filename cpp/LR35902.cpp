@@ -75,16 +75,16 @@ void LR35902::UpdateRegister(Byte data, char r1)
 void LR35902::UpdateFlag(char f, bool state = true)
 {
 	switch (f) {
-	case 'z':
+	case 'Z':
 		ZF = state;
 		break;
-	case 'c':
+	case 'C':
 		CF = state;
 		break;
-	case 'n':
+	case 'N':
 		NF = state;
 		break;
-	case 'h':
+	case 'H':
 		HF = state;
 		break;
 	default:
@@ -150,14 +150,14 @@ Byte LR35902::GetFlag(char c)
 {
 	switch (c)
 	{
-	case 'z':
-		return r;
-	case 'c':
-		return c;
-	case 'n':
-		return n;
-	case 'h':
-		return h;							
+	case 'Z':
+		return Z;
+	case 'C':
+		return C;
+	case 'N':
+		return N;
+	case 'H':
+		return H;							
 	default:
 		std::cerr << "RunTimeError_FlagNotFound\n";
 	}
