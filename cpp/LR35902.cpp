@@ -75,16 +75,16 @@ void LR35902::UpdateRegister(Byte data, char r1)
 void LR35902::UpdateFlag(char f, bool state = true)
 {
 	switch (f) {
-	case 'z':
+	case 'Z':
 		ZF = state;
 		break;
-	case 'c':
+	case 'C':
 		CF = state;
 		break;
-	case 'n':
+	case 'N':
 		NF = state;
 		break;
-	case 'h':
+	case 'H':
 		HF = state;
 		break;
 	default:
@@ -141,8 +141,28 @@ Byte LR35902::GetRegister(char c)
 	return 0x00;
 }
 
-// @Cyb3s, @0hM1C1uf1, @AleBitCode qualcuno crei qua la funzione GetFlag(char c) 
-
+// @Cyb3s, @0hM1C1uf1, @AleBitCode qualcuno crei qua la funzione GetFlag(char c) [si tesoro]
+/* GetFlag ritorna il valore di un dato flag
+*  @param1 flag da cui prendere il dato
+*  @return valore del flag
+*/ 
+Byte LR35902::GetFlag(char c)
+{
+	switch (c)
+	{
+	case 'Z':
+		return Z;
+	case 'C':
+		return C;
+	case 'N':
+		return N;
+	case 'H':
+		return H;							
+	default:
+		std::cerr << "RunTimeError_FlagNotFound\n";
+	}
+	return 0x00;
+}
 /* ExtractUpper estra la parte superiore di una word
 *  @param1 word da cui estrarre il valore
 *  @return valore superiore
