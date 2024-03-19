@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "LR35902.h"
+#include "bus.h"
 using namespace nstdtypes;
 
 class Opcodes {
@@ -17,8 +18,13 @@ class Opcodes {
 		// Opcode a 2 operandi word
 		void ExecuteOpcodes(LR35902&, Byte, Word, Word);
 
+		Opcodes(Bus &bus){
+			this->RAM = bus;
+		}
 
 	private:
+		Bus RAM;
+
 		void NOP();
 		void LD_BC_WORDDATA(LR35902&, Word);
 		void LD_ADDRESSOFBC_A(LR35902&);

@@ -2,7 +2,7 @@
 
 Bus::Bus() {
 	//clear RAM content
-	for (auto &i : ram) i = 0x00;
+	for (auto &i : RAM) i = 0x00;
 }
 
 Bus::~Bus() {
@@ -10,9 +10,9 @@ Bus::~Bus() {
 }
 
 void Bus::Write(Word addr, Byte data) {
-	ram[addr] = data;
+	RAM[addr] = data;
 }
 
 Byte Bus::Read(Word addr, bool bReadOnly = false) {
-	return ram[addr];
+	return RAM[addr];
 }
