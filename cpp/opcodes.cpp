@@ -109,7 +109,7 @@ void Opcodes::DEC_B(LR35902 &machine)
 
 	machine.UpdateFlag('N', true);
 	if(result == 0)
-		machine.UpdateFlag('Z', true)
+		machine.UpdateFlag('Z', true);
 
 	// Qualcuno implementi l'update del flag H dato che non so minimamente come fare :) @RehTrizZ
 }

@@ -66,7 +66,6 @@ class LR35902 {
 		
 		Byte GetRegister(char);
         Word GetDoubleRegister(std::string rx);
-        Word GetRegister(std::string);
         bool GetFlag(char);
 };
 
