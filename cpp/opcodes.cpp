@@ -2,6 +2,7 @@
 #include "../headers/opcodes.h"
 #include "../headers/LR35902.h"
 
+
 using namespace nstdtypes;
 
 /////////////////////////////////////////////////////
@@ -129,7 +130,7 @@ void Opcodes::LD_ADDRESSOFWORD_STACKPOINTER()
 
 void Opcodes::ADD_HL_BC(LR35902 &machine)
 {
-	machine.UpdateRegister(machine.GetDoubleRegister("BC") + machine.GetDoubleRegister("BC"), 'HL');
+	machine.UpdateRegister(machine.GetDoubleRegister("BC") + machine.GetDoubleRegister("BC"), "HL");
 }
 
 void Opcodes::LD_A_ADDRESSOFBC(LR35902 &machine)
