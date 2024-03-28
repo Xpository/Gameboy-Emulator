@@ -7,12 +7,16 @@
 int main() {
 	Cartridge cart("roms/PokemonRed.gb");
 	
-	Byte dt = cart.data[0x104];
 
 	bool lol = cart.CheckLogo();
+	std::string title = cart.GetTitle();
+	std::string lic = cart.GetNewLicenseeCode();
+	std::string type = cart.GetCartridgeType();
+	std::string oldlic = cart.GetOldLicenseeCode();
+	bool cksum = cart.ComputeChecksum();
 
-	std::cout << "NIGGA " << lol << " ";
+
+	std::cout << "| " << lol << " | " << title << " | " << lic << " | " << type << " | " << oldlic << " | " << cksum << " | " << "\n\n";
 	return 0;
 }
 
-// FFFF0
