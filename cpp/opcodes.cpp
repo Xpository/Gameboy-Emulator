@@ -97,8 +97,9 @@ void Opcodes::INC_B(LR35902 &machine)
 	machine.UpdateFlag('N', false);
 	if(result == 0)
 		machine.UpdateFlag('Z', true);
-
-	// Qualcuno implementi l'update del flag H dato che non so minimamente come fare :) @RehTrizZ
+	if((result&0x1F)==0x10)
+		machine.UpdateFlag('H', true);
+	// Qualcuno implementi l'update del flag H dato che non so minimamente come fare :) @RehTrizZ [si cazzo]
 }
 
 void Opcodes::DEC_B(LR35902 &machine)
@@ -111,8 +112,9 @@ void Opcodes::DEC_B(LR35902 &machine)
 	machine.UpdateFlag('N', true);
 	if(result == 0)
 		machine.UpdateFlag('Z', true);
-
-	// Qualcuno implementi l'update del flag H dato che non so minimamente come fare :) @RehTrizZ
+	if((result&0x0F)==0x0F)
+		machine.UpdateFlag('H', true);
+	// Qualcuno implementi l'update del flag H dato che non so minimamente come fare :) @RehTrizZ [si cazzo, più duro]
 }
 
 void Opcodes::LD_B_BYTEDATA(LR35902 &machine, Byte data)
