@@ -40,7 +40,71 @@ class Opcodes {
 		void INC_C(LR35902&);
 		void DEC_C(LR35902&);
 		void LD_C_BYTEDATA(LR35902&);
-		void RRCA();								// Stessa cosa del 0x07 ma a destra
+		void RRCA();							// Stessa cosa del 0x07 ma a destra
+		
+		//necessita definizione
+
+		void STOP();
+		void LD_DE_WORDDATA(LR35902&, Word);
+		void LD_ADDRESSOFDE_A(LR35902&);
+		void INC_DE(LR35902&);
+		void INC_D(LR35902&);
+		void DEC_D(LR35902&);
+		void LD_D_BYTEDATA(LR35902&, Byte);
+		void RLA();
+		void JR_BYTEDATA(LR35902&, Byte);				// assegna a PC il Byte
+		void ADD_HL_DE(LR35902&);
+		void LD_A_ADDRESSOFDE(LR35902&);
+		void DEC_DE(LR35902&);
+		void INC_E(LR35902&);
+		void DEC_E(LR35902&);
+		void LD_E_BYTEDATA(LR35902&);
+		void RRA(LR35902&);
+		void JR_
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+		void
+
 };
 
 
