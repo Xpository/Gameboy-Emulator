@@ -1,4 +1,4 @@
-#include "cartridge.h"
+#include "../headers/cartridge.h"
 
  
 Cartridge::Cartridge(std::string filepath) {

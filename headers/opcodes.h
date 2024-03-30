@@ -222,6 +222,57 @@ class Opcodes {
 		void CP_A(LR35902&);
 		void RET_NZ(LR35902&);
 		void POP_BC(LR35902&);
+		void JP_NZ_WORDADDRES(LR35902&, Word);
+		void JP_WORDADDRES(LR35902&, Word);
+		void CALL_NZ_WOARDADDRES(LR35902&);
+		void PUSH_BC(LR35902&);
+		void ADD_A(LR35902&,Byte);
+		void RST_00H(LR35902&,Byte);
+		void RET_Z(LR35902&);
+		void RET(LR35902&);
+		void JP_Z(LR35902&,Word);
+		void PREFIX_CB(LR35902&); //da controllare//
+		void CALL_Z(LR35902&, Word);
+		void CALL(LR35902&, Word);
+		void ADC_A(LR35902&); //This opcode group adds the contents of the specified byte-valued input and the register F carry flag (Flag computed as a 1 or a 0) to the contents of register A, to be stored in register A. The formula can be seen as A=A+r+CY. //
+		void RST_08H(LR35902&,Byte);
+		void RET_NC(LR35902&);
+		void POP_DE(LR35902&);
+		void JP_NC(LR35902&, Word);
+		void CALL_NC(LR35902&, Word);
+		void PUSH_DE(LR35902&);
+		void SUB(LR35902&,Byte);
+		void RST_10H(LR35902&);
+		void RET_C(LR35902&);
+		void RETI(LR35902&);
+		void JP_C(LR35902&, Word);
+		void CALL_C(LR35902&,Word);
+		void SBC_A(LR35902&,Byte);
+		void RST_18H(LR35902&);
+		void LDH_byte_A(LR35902&,Byte); //Put A into memory address $FF00+n//
+		void POP_HL(LR35902&);
+		void LD_C_A(LR35902&);
+		void PUSH_HL(LR35902&);
+		void AND(LR35902&,Byte);
+		void RST_20H(LR35902&);
+		void ADD_SP_R8(LR35902&,Byte);
+		void JP_HL(LR35902&);
+		void LD_WORD_A(LR35902&,Word);
+		void XOR(LR35902&,Byte);
+		void RST_28H(LR35902&);
+		void LDH_A_BYTE(LR35902&);
+		void POP_AF(LR35902&);
+		void LD_A_C(LR35902&);
+		void DI(LR35902&);
+		void PUSH_AF(LR35902&);
+		void OR(LR35902&,Byte);
+		void RST_30H(LR35902&);
+		void LD_HL_SP_Byte(LR35902&,Byte);
+		void LD_SP_HL(LR35902&);
+		void LD_A_WORD(LR35902&,Word);
+		void EI(LR35902&);
+		void CP(LR35902&,Byte);
+		void RST_38H(LR35902&);
 };
 
 
