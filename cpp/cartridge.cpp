@@ -1,4 +1,5 @@
 #include "../headers/cartridge.h"
+#include "cartridge.h"
 
  
 Cartridge::Cartridge(std::string filepath) : data(nullptr) {
@@ -25,14 +26,12 @@ Cartridge::Cartridge(std::string filepath) : data(nullptr) {
     
     // A questo punto, puoi determinare la dimensione effettiva della ROM
     // Assumendo che GetRomSize() possa ora operare correttamente sul buffer temporaneo
-    // Nota: La funzione GetRomSize() deve essere adattata per accettare un Byte* come parametro
     unsigned int effectiveSize = GetRomSize(tempBuffer);
 
     // Alloca memoria basata sulla dimensione effettiva della ROM
     data = new Byte[effectiveSize];
 
     // Copia i dati necessari nel buffer definitivo `data`
-    // Assicurati di non superare la dimensione del file letto (`size`)
     unsigned int bytesToCopy = std::min(static_cast<std::streamsize>(effectiveSize), size);
     for(unsigned int i = 0; i < bytesToCopy; i++) {
         data[i] = tempBuffer[i];
@@ -89,6 +88,10 @@ bool Cartridge::CheckCGBFlag()
     }
 }
 
+
+/* GetNewLicenseeCode ritorna il codice licensa a 0x0145
+ * @return ritorna la stringa con il nome della casa produttrice del gioco
+*/ 
 std::string Cartridge::GetNewLicenseeCode()
 {
     std::map<Byte, std::string> NewLicenseeCodes = {
@@ -149,16 +152,20 @@ std::string Cartridge::GetNewLicenseeCode()
         {0x92, "Video system"},
         {0x93, "Ocean/Acclaim"},
         {0x95, "Varie"},
-        {0x96, "Yonezawa/s’pal"},
+        {0x96, "Yonezawa/s'pal"},
         {0x97, "Kaneko"},
         {0x99, "Pack in soft"},
-        // {0x9H, "Bottom Up"},           Questa entry e' sbagliata ma secondo la documentazione il suo hex e' 0x09H ma non puo' assumere H... PORCAMADONNA
+        // {0x9H, "Bottom Up"},           Questa entry e' sbagliata ma secondo la documentazione il suo hex e' 0x09H ma non puo' assumere H... 
         {0xA4, "Konami (Yu-Gi-Oh!)"}
     };
 
     return NewLicenseeCodes[data[0x0145]];
 }
 
+
+/* GetCartridgeType ritorna il tipo della cartridge
+ * @return ritorna la stringa con il tipo della cartridge
+*/
 std::string Cartridge::GetCartridgeType()
 {
     std::map<Byte, std::string> cartridgeTypes = {
@@ -195,16 +202,45 @@ std::string Cartridge::GetCartridgeType()
     return cartridgeTypes[data[0x0147]];
 }
 
+
+/* !!!!! FUNZIONE UTILIZZATA NEL COSTRUCTOR NON USARE DA ALTRE PARTI !!!!!
+ * GetRomSize ritorna la ROM size
+ * @return ritorna un insigned int con la grandezza della ROM in base all'indirizzo di 0x0148
+*/
 unsigned int Cartridge::GetRomSize(Byte *dt)
 {
     return 32 * 1024 * (1 << dt[0x148]);
 }
 
+/* GetRomSize ritorna la ROM size
+ * @return ritorna un insigned int con la grandezza della ROM in base all'indirizzo di 0x0148
+*/
 unsigned int Cartridge::GetRomSize()
 {
     return 32 * 1024 * (1 << data[0x148]);
 }
 
+
+/* GetNewLicenseeCode ritorna la RAM size
+ * @return ritorna un insigned int con la grandezza della ROM in base all'indirizzo di 0x0148
+*/
+unsigned int Cartridge::GetRamSize()
+{
+    std::map<Byte, unsigned int> ramSizes = {
+        {0x00, 0},          // No RAM
+        {0x01, 0},          // Unused
+        {0x02, 8 * 1024},   // 8 KiB
+        {0x03, 32 * 1024},  // 32 KiB
+        {0x04, 128 * 1024}, // 128 KiB
+        {0x05, 64 * 1024},  // 64 KiB
+    };
+
+    return ramSizes[data[0x0149]];
+}
+
+/* GetOldLicenseeCode ritorna il vecchio Licensee code
+ * @return ritorna il vecchio Licensee code se e' 0x33 usa il NewLicenseeCode
+*/
 std::string Cartridge::GetOldLicenseeCode()
 {
     std::map<Byte, std::string> licenseeCodes = {
