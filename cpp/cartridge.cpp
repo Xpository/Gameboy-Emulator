@@ -1,34 +1,50 @@
 #include "cartridge.h"
 
  
-Cartridge::Cartridge(std::string filepath) {
-    // Apre il file in modalità binaria.
+Cartridge::Cartridge(std::string filepath) : data(nullptr) {
     std::ifstream file(filepath, std::ios::binary);
     if (!file) {
         std::cout << "File not found\n";
         return;
     }
     
-    // Vai alla fine del file.
+    // Va alla fine del file per determinare la dimensione
     file.seekg(0, std::ios::end);
-    // Ottieni la dimensione del file.
     std::streamsize size = file.tellg();
-    // Torna all'inizio del file.
-    file.seekg(0, std::ios::beg);
+    file.seekg(0, std::ios::beg); // Ritorna all'inizio del file
 
-    // Se la dimensione del file è maggiore della dimensione dell'array, è necessario gestire l'errore o ridimensionare l'array.
-    if (size > sizeof(data)) {
-        std::cerr << "Errore: Il file è troppo grande per essere caricato nell'array.\n";
+    // Alloca memoria temporanea per leggere il file
+    Byte* tempBuffer = new Byte[size];
+
+    // Leggi il file nel buffer temporaneo
+    if (!file.read(reinterpret_cast<char*>(tempBuffer), size)) {
+        std::cerr << "Errore durante la lettura del file.\n";
+        delete[] tempBuffer;
         return;
     }
+    
+    // A questo punto, puoi determinare la dimensione effettiva della ROM
+    // Assumendo che GetRomSize() possa ora operare correttamente sul buffer temporaneo
+    // Nota: La funzione GetRomSize() deve essere adattata per accettare un Byte* come parametro
+    unsigned int effectiveSize = GetRomSize(tempBuffer);
 
-    // Legge il contenuto del file nell'array.
-    if (!file.read(reinterpret_cast<char*>(data), size)) {
-        std::cerr << "Errore durante la lettura del file.\n";
+    // Alloca memoria basata sulla dimensione effettiva della ROM
+    data = new Byte[effectiveSize];
+
+    // Copia i dati necessari nel buffer definitivo `data`
+    // Assicurati di non superare la dimensione del file letto (`size`)
+    unsigned int bytesToCopy = std::min(static_cast<std::streamsize>(effectiveSize), size);
+    for(unsigned int i = 0; i < bytesToCopy; i++) {
+        data[i] = tempBuffer[i];
     }
 
-    // Chiude il file.
+    // Pulisci la memoria temporanea
+    delete[] tempBuffer;
     file.close();
+}
+
+Cartridge::~Cartridge() {
+    delete[] data; // Distruttore per pulire la memoria
 }
 
 /* CheckLogo controlla i Byte 0x0104 a 0x0133 per vedere se corrisponde
@@ -177,6 +193,16 @@ std::string Cartridge::GetCartridgeType()
     };
 
     return cartridgeTypes[data[0x0147]];
+}
+
+unsigned int Cartridge::GetRomSize(Byte *dt)
+{
+    return 32 * 1024 * (1 << dt[0x148]);
+}
+
+unsigned int Cartridge::GetRomSize()
+{
+    return 32 * 1024 * (1 << data[0x148]);
 }
 
 std::string Cartridge::GetOldLicenseeCode()

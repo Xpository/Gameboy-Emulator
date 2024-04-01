@@ -12,11 +12,12 @@ int main() {
 	std::string title = cart.GetTitle();
 	std::string lic = cart.GetNewLicenseeCode();
 	std::string type = cart.GetCartridgeType();
+	unsigned int size = cart.GetRomSize();
 	std::string oldlic = cart.GetOldLicenseeCode();
 	bool cksum = cart.ComputeChecksum();
 
 
-	std::cout << "| " << lol << " | " << title << " | " << lic << " | " << type << " | " << oldlic << " | " << cksum << " | " << "\n\n";
+	std::cout << "| " << lol << " | " << title << " | " << lic << " | " << type << " | " << oldlic << " | " << cksum << " | " << "Size: " <<  size << "\n\n";
 	return 0;
 }
 
