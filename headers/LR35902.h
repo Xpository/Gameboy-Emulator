@@ -1,12 +1,12 @@
 #pragma once
 
 #include "types.h"
+#include "cartridge.h"
 #include <string>
 using namespace nstdtypes;
 
 class LR35902 {
 	private:
-		Byte Memory[0x200000];
 		/*
 			Registri sono:
 				A,B,C,D,E,H,L General Purpose
@@ -55,9 +55,8 @@ class LR35902 {
 		Byte ExtractUpper(Word);
 		Byte ExtractLower(Word);
 		
-
 	public:
-		LR35902();
+		LR35902(std::string, bool, bool, Byte);
 
 
 		void UpdateRegister(Byte, char); // si updateta una parte del registro (basso o alto)
