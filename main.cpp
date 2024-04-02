@@ -5,7 +5,7 @@
 // g++ -o main main.cpp cpp/cartridge.cpp cpp/LR35902.cpp cpp/opcodes.cpp cpp/bus.cpp -I headers
 
 int main() {
-	Cartridge cart("roms/PokemonRed.gb");
+	Cartridge cart("roms/MarioYoshi.gb");
 	
 
 	bool lol = cart.CheckLogo();
