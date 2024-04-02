@@ -239,7 +239,7 @@ unsigned int Cartridge::GetRamSize()
 }
 
 /* GetOldLicenseeCode ritorna il vecchio Licensee code
- * @return ritorna il vecchio Licensee code se e' 0x33 usa il NewLicenseeCode
+ * @return ritorna il vecchio Licensee code. Se e' 0x33 usa il NewLicenseeCode
 */
 std::string Cartridge::GetOldLicenseeCode()
 {
@@ -412,4 +412,33 @@ bool Cartridge::ComputeChecksum()
     }
 
     return checksum == data[0x014D];
+}
+
+/* ReadCart ritorna un valore, dato l'indirizzo come parametro
+ * @return ritorna un Byte presente all'indirizzo "address"
+*/
+Byte Cartridge::ReadCart(Word address) 
+{   
+    // Da modificare i bound per restringere l'accesso
+    return data[address];
+}
+
+/* ReadFromCart ritorna un array con i valori da inizio a fine
+ * @return ritorna un puntatore ad un array di (endAddress - startAddress) + 1 Byte,
+ *         contenente i dati da startAddress a endAddress.
+*/         
+Byte* Cartridge::ReadFromToCart(Word startAddress, Word endAddress)
+{
+    // Scambia in caso di uso sbagliato
+    if(startAddress > endAddress){
+        std::swap(startAddress, endAddress);
+    }
+    int size = (endAddress - startAddress) + 1;
+    Byte* dataArray = new Byte[size];
+
+    for(Byte i = startAddress, j = 0; i <= endAddress; i++, j++){
+        dataArray[j] = data[i];
+    }
+
+    return dataArray;
 }
