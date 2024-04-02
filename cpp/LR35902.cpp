@@ -5,7 +5,7 @@
 
 
 
-LR35902::LR35902(std::string bootROMS, bool isChecksum00 = false, bool isAnyLicensee01 = false, Byte sumOfTitleBytes = 0x00)
+LR35902::LR35902(std::string bootROMS = "DMG", bool isChecksum00 = false, bool isAnyLicensee01 = false, Byte sumOfTitleBytes = 0x00)
 {
 	
 	if(bootROMS == "DMG0"){
