@@ -1,5 +1,9 @@
 #include "../headers/cartridge.h"
-#include "cartridge.h"
+#include "../headers/types.h"
+
+using namespace nstdtypes;
+
+
 
  
 Cartridge::Cartridge(std::string filepath) : data(nullptr) {
@@ -406,8 +410,8 @@ bool Cartridge::ComputeChecksum()
     // Se il risultato non corrisponde al valore in 0x014D
     // L'esecuzione e' terminata
     //
-    uint8_t checksum = 0;
-    for (uint16_t address = 0x0134; address <= 0x014C; address++) {
+    Byte checksum = 0;
+    for (Word address = 0x0134; address <= 0x014C; address++) {
         checksum = checksum - data[address] - 1;
     }
 

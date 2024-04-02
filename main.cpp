@@ -18,6 +18,7 @@ int main() {
 
 
 	std::cout << "| " << lol << " | " << title << " | " << lic << " | " << type << " | " << oldlic << " | " << cksum << " | " << "Size: " <<  size << "\n\n";
+	
 	return 0;
 }
 
