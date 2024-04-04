@@ -1,0 +1,2 @@
+1.  http://marc.rawer.de/Gameboy/Docs/GBCPUman.pdf
+2. https://gbdev.io/gb-opcodes/optables/ (ISTRUCTION SET)
