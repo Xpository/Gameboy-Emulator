@@ -5,6 +5,8 @@
 #include <string>
 using namespace nstdtypes;
 
+// casotti stai lavorando, bravo russazzo ciuccia cazzo 
+
 class LR35902 {
 	private:
 		/*
