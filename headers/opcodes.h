@@ -119,7 +119,7 @@ typedef enum{// --> CONDIZIONI PER CUI UN ISTRUZIONE PUO' ESSERE ESEGUITA
 // variabili di tipo enum, i quali possibili contenuti sono stati inseriti in 
 // precedenza nella correspettiva enum
 
-struct instructions  
+struct instruction 
 {
 	tipo type;
 	indirizzamento indi;
