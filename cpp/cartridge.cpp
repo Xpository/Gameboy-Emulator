@@ -1,5 +1,6 @@
 #include "../headers/cartridge.h"
 #include "../headers/types.h"
+#include "cartridge.h"
 
 using namespace nstdtypes;
 
@@ -418,8 +419,9 @@ bool Cartridge::ComputeChecksum()
     return checksum == data[0x014D];
 }
 
+
 /* ReadCart ritorna un valore, dato l'indirizzo come parametro
- * @return ritorna un Byte presente all'indirizzo "address"
+* @return ritorna un Byte presente all'indirizzo "address"
 */
 Byte Cartridge::ReadCart(Word address) 
 {   
@@ -446,3 +448,29 @@ Byte* Cartridge::ReadFromToCart(Word startAddress, Word endAddress)
 
     return dataArray;
 }
+
+
+
+bool Cartridge::ValidateCartridge()
+{
+    // Controllo del logo
+    if(!CheckLogo())
+        return false;
+    
+    // Controllo del titolo
+    std::string title = GetTitle();
+    if(title.length() == 0)
+        return false;
+    
+    // Controlla i licensee code
+    std::string licensee = GetOldLicenseeCode();
+    if(licensee.length() == 0)
+        return false;
+    
+    // Controlla la checksum
+    if(!ComputeChecksum())
+        return false;
+    
+
+    return true;
+} 

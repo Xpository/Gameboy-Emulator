@@ -233,8 +233,8 @@ LR35902::LR35902(std::string bootROMS = "DMG0", bool isChecksum00 = false, bool 
 
 
 /* UpdateRegister modifica il valore di un registro
-*  @param1 dato byte da inserire
-*  @param2 registro in maiuscolo
+*  @param dato byte da inserire
+*  @param registro in maiuscolo
 */ 
 void LR35902::UpdateRegister(Byte data, char r1)
 {
@@ -269,8 +269,8 @@ void LR35902::UpdateRegister(Byte data, char r1)
 
 
 /* UpdateFlag modifica il valore di una flag
-*  @param1 flag da modificare
-*  @param2 stato in cui modificarlo, inizalmente true
+*  @param flag da modificare
+*  @param stato in cui modificarlo, inizalmente true
 */ 
 void LR35902::UpdateFlag(char f, bool state = true)
 {
@@ -294,8 +294,8 @@ void LR35902::UpdateFlag(char f, bool state = true)
 }
 
 /* UpdateRegister modifica il valore di un registro
-*  @param1 dato word da inserire
-*  @param2 registro in maiuscolo
+*  @param dato word da inserire
+*  @param registro in maiuscolo
 */ 
 void LR35902::UpdateRegister(Word data, std::string rx)
 {
@@ -314,7 +314,7 @@ void LR35902::UpdateRegister(Word data, std::string rx)
 }
 
 /* GetRegister ritorna il valore di un dato registro
-*  @param1 registro da cui prendere il dato
+*  @param registro da cui prendere il dato
 *  @return valore del registro
 */ 
 Byte LR35902::GetRegister(char c)
@@ -342,7 +342,7 @@ Byte LR35902::GetRegister(char c)
 }
 
 /* GetDoubleRegister ritorna una word con i registri RX
- * @param1 2 caratteri che simboleggiano il registro
+ * @param 2 caratteri che simboleggiano il registro
  * @return La word data dalla somma di parte alta + parte bassa (0x0000)
 */
 Word LR35902::GetDoubleRegister(std::string rx){
@@ -363,7 +363,7 @@ Word LR35902::GetDoubleRegister(std::string rx){
 
 
 /* GetFlag ritorna il valore di un dato flag
-*  @param1 flag da cui prendere il dato
+*  @param flag da cui prendere il dato
 *  @return valore del flag
 */ 
 bool LR35902::GetFlag(char c)
@@ -385,7 +385,7 @@ bool LR35902::GetFlag(char c)
 }
 
 /* ExtractUpper estrae la parte superiore di una word
-*  @param1 word da cui estrarre il valore
+*  @param word da cui estrarre il valore
 *  @return valore superiore
 */ 
 Byte LR35902::ExtractUpper(Word data)
@@ -395,7 +395,7 @@ Byte LR35902::ExtractUpper(Word data)
 }
 
 /* ExtractUpper estrae la parte inferiore di una word
-*  @param1 word da cui estrarre il valore
+*  @param word da cui estrarre il valore
 *  @return valore inferiore
 */ 
 Byte LR35902::ExtractLower(Word data)

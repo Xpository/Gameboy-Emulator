@@ -24,6 +24,8 @@ class Cartridge{
         std::string GetOldLicenseeCode();
         bool ComputeChecksum();
         
+        bool ValidateCartridge();
+
         Byte ReadCart(Word);
         Byte* ReadFromToCart(Word, Word);
     private:
