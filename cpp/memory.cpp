@@ -34,4 +34,14 @@ Memory::Memory(Byte* datas, std::string CartridgeType)
 	}else{
 		MBC = NO_MBCS;
 	}
+
+	// Inizializza la memoria con i primi 32768 bytes della ROM
+	for(Word i = 0x0000; i < 0x8000; i++){
+			cartridgeROM[i] = datas[i];
+	}
 }
+
+
+//
+//	Serve implementazione dei diversi MBC qualcuno la faccia @0hM1C1uf1 @AleBitCode <3 da @RehTrizZ 
+//

@@ -16,7 +16,7 @@ class Memory{
         // [2] da 0x4000 a 0x7FFF e' ROM bank commutabile | Contiene dati che variano
         // 
         // Data la grandezza della ROM il tutto sara mappato nel corso del programma.
-        std::array<Byte, 8 * 1024 * 1024> cartridgeROM;
+        std::array<Byte, 0x8000> cartridgeROM;
 
         std::array<Byte, 8 * 1024> VRAM;
 
@@ -36,6 +36,8 @@ class Memory{
         // MBC o Memory Bank Controller si occupa di scambiare la memoria al 0x4000 --> 0x7FFF
         // Ce ne sono diversi tipi, per questo utilizzeremo un enum per la sua definizione
         MBCs MBC;
+
+        
     public:
         Memory(Byte*, std::string);
         
