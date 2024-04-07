@@ -40,5 +40,7 @@ class Memory{
         
     public:
         Memory(Byte*, std::string);
+        Byte Read(Word);
+        void Write(Word, Byte);
         
 };

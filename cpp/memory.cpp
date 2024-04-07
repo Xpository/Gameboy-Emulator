@@ -41,6 +41,16 @@ Memory::Memory(Byte* datas, std::string CartridgeType)
 	}
 }
 
+Byte Memory::Read(Word)
+{
+    return Byte();
+}
+
+void Memory::Write(Word, Byte)
+{
+	
+}
+
 
 //
 //	Serve implementazione dei diversi MBC qualcuno la faccia @0hM1C1uf1 @AleBitCode <3 da @RehTrizZ 
