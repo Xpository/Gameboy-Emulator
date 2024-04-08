@@ -299,7 +299,6 @@ instruction istruzioni[0x100]={
     [0xFB] = {IN_EI},
     [0xFE] = {IN_CP, AM_R_D8, RT_A},
     [0xFF] = {IN_RST, AM_IMP, RT_NONE, RT_NONE, CT_NONE, 0x38},
-//DIVERTITEVI A FARLI
 
 };
 

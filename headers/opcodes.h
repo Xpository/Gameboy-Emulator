@@ -151,7 +151,7 @@ class Opcodes {
 		}
 
 	private:
-		Bus RAM;
+		Memory RAM;
 
 
 
