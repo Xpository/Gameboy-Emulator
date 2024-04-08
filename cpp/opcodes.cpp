@@ -1,6 +1,7 @@
 #include "../headers/types.h"
 #include "../headers/opcodes.h"
 #include "../headers/LR35902.h"
+#include "opcodes.h"
 using namespace nstdtypes;
 
 /////////////////////////////////////////////////////
@@ -302,5 +303,3 @@ instruction istruzioni[0x100]={
 
 };
 
-
-		
