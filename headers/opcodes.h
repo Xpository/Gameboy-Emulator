@@ -3,10 +3,11 @@
 #include "types.h"
 #include "LR35902.h"
 #include "memory.h"
+#include "memory.h"
 using namespace nstdtypes;
 
 
-typedef enum { //--> typedef da un tag al tipo in questo caso ad enum
+ enum tipo{ //--> typedef da un tag al tipo in questo caso ad enum
 
 	//INSTRUCTION TABLE  	IN(INSTRUCTION)_XXX(NAME)
 
@@ -60,10 +61,10 @@ typedef enum { //--> typedef da un tag al tipo in questo caso ad enum
 	IN_BIT,
 	IN_RES,
 	IN_SET
-}tipo;
+};
 
 
-typedef enum {
+ enum indirizzamento{
 	AM_R_D16,
 	AM_R,
 	AM_MR_R,
@@ -79,15 +80,15 @@ typedef enum {
 	AM_HL_SPR,
 	AM_D16,
 	AM_D8,
-	AM_IMP,
-	AM_D16_R,
+	AM_IMP, //implide no indirizzamento
+	AM_D16_R, 
 	AM_MR_D8,
 	AM_MR,
 	AM_A16_R,
 	AM_R_A16
-}indirizzamento;
+};
 
-typedef enum{
+ enum registri{
 	RT_NONE,
 	RT_A,
 	RT_F,
@@ -103,16 +104,15 @@ typedef enum{
 	RT_HL,
 	RT_SP,
 	RT_PC
-}registri;
-
-typedef enum{// --> CONDIZIONI PER CUI UN ISTRUZIONE PUO' ESSERE ESEGUITA
+};
+ enum condizione{// --> CONDIZIONI PER CUI UN ISTRUZIONE PUO' ESSERE ESEGUITA
 	CT_NONE,   //nessuna
 	CT_NZ,	//zero flag non settato
 	CT_Z,	//zero flag settato
 	CT_NC,	//carry flag non settato
 	CT_C	//carry flag settato
 
-}condizione;
+};
 
 
 // una volta necessaria un istruzione viene chiamata la struct passandoli le varie
