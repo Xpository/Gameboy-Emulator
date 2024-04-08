@@ -65,8 +65,8 @@ using namespace nstdtypes;
 
  enum indirizzamento{
 	AM_R_D16,
-	AM_R,
-	AM_MR_R,
+	AM_R_R, //REGISTER TO REGISTER
+	AM_MR_R, // REGISTER TO A MEMORY LOCATION OF A REGISTER
 	AM_R,
 	AM_R_D8,
 	AM_R_MR,
