@@ -41,14 +41,18 @@ Memory::Memory(Byte* datas, std::string CartridgeType)
 	}
 }
 
-Byte Memory::Read(Word)
+Byte Memory::Read(Word address)
 {
-    return Byte();
+    if(address <= 0x7FFF){
+
+	}else if(address >= 0x8000 && address <= 0x9FFF){
+
+	}
 }
 
 void Memory::Write(Word, Byte)
 {
-	
+
 }
 
 

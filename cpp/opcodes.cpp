@@ -23,7 +23,7 @@ using namespace nstdtypes;
 
 //deefinizioni istruzioni
 
-instructions istruzioni[0x100]={
+instruction istruzioni[0x100]={
 	[0x00] = {IN_NOP, AM_IMP}, // NOP
    	[0x01] = {IN_LD, AM_R_D16, RT_BC}, // LD BC,d16
 	[0x02] = {IN_LD, AM_MR_R, RT_BC, RT_A}, // LD (BC),A
