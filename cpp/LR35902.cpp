@@ -1,177 +1,187 @@
 #include "../headers/LR35902.h"
-#include "../headers/bus.h"
+#include "../headers/memory.h"
 #include <iostream>
 #include <string>
+
+
+//personalmente penso che questa dichiarazione qua sotto debbe essere contenata in cartridge visto che 
+//la riguarda totalmente 
 
 
 
 LR35902::LR35902(std::string bootROMS = "DMG0", bool isChecksum00 = false, bool isAnyLicensee01 = false, Byte sumOfTitleBytes = 0x00)
 {
-	
+	cpu_register reg;
+	flags fl;
+
 	if(bootROMS == "DMG0"){
-		A = 0x01;
 
-		B = 0xFF;
-		C = 0x13;
-
-		D = 0x00;
-		E = 0xC1;
-
-		H = 0x84;
-		L = 0x03;
-
-		SP = 0xFFFE;
-		PC = 0x0100;
-
-		ZF = false;
-		CF = false;
-
-		NF = false;
-		HF = false;
-	}else if(bootROMS == "DMG"){
-		A = 0x01;
-
-		B = 0x00;
-		C = 0x13;
-
-		D = 0x00;
-		E = 0xD8;
-
-		H = 0x01;
-		L = 0x4D;
-
-		SP = 0xFFFE;
-		PC = 0x0100;
 		
-		ZF = true;
-		NF = false;
+
+
+		reg.A = 0x01;
+
+		reg.B = 0xFF;
+		reg.C = 0x13;
+
+		reg.D = 0x00;
+		reg.E = 0xC1;
+
+		reg.H = 0x84;
+		reg.L = 0x03;
+
+		reg.SP = 0xFFFE;
+		reg.PC = 0x0100;
+
+		fl.ZF = false;
+		fl.CF = false;
+
+		fl.NF = false;
+		fl.HF = false;
+	}else if(bootROMS == "DMG"){
+		reg.A = 0x01;
+
+		reg.B = 0x00;
+		reg.C = 0x13;
+
+		reg.D = 0x00;
+		reg.E = 0xD8;
+
+		reg.H = 0x01;
+		reg.L = 0x4D;
+
+		reg.SP = 0xFFFE;
+		reg.PC = 0x0100;
+		
+		fl.ZF = true;
+		fl.NF = false;
 		if(isChecksum00){
-			CF = false;
-			HF = false;
+			fl.CF = false;
+			fl.HF = false;
 		}else{
-			CF = true;
-			HF = true;
+			fl.CF = true;
+			fl.HF = true;
 		}
 	}else if(bootROMS == "MGB"){
-		A = 0xFF;
+		reg.A = 0xFF;
 
-		B = 0x00;
-		C = 0x13;
+		reg.B = 0x00;
+		reg.C = 0x13;
 
-		D = 0x00;
-		E = 0xD8;
+		reg.D = 0x00;
+		reg.E = 0xD8;
 
-		H = 0x01;
-		L = 0x4D;
+		reg.H = 0x01;
+		reg.L = 0x4D;
 
-		SP = 0xFFFE;
-		PC = 0x0100;
+		reg.SP = 0xFFFE;
+		reg.PC = 0x0100;
 		
-		ZF = true;
-		NF = false;
+		fl.ZF = true;
+		fl.NF = false;
 		if(isChecksum00){
-			CF = false;
-			HF = false;
+			fl.CF = false;
+			fl.HF = false;
 		}else{
-			CF = true;
-			HF = true;
+			fl.CF = true;
+			fl.HF = true;
 		}
 	}else if(bootROMS == "SGB"){
-		A = 0x01;
+		reg.A = 0x01;
 
-		B = 0x00;
-		C = 0x14;
+		reg.B = 0x00;
+		reg.C = 0x14;
 
-		D = 0x00;
-		E = 0x00;
+		reg.D = 0x00;
+		reg.E = 0x00;
 
-		H = 0xC0;
-		L = 0x60;
+		reg.H = 0xC0;
+		reg.L = 0x60;
 
-		SP = 0xFFFE;
-		PC = 0x0100;
+		reg.SP = 0xFFFE;
+		reg.PC = 0x0100;
 
-		ZF = false;
-		CF = false;
+		fl.ZF = false;
+		fl.CF = false;
 
-		NF = false;
-		HF = false;
+		fl.NF = false;
+		fl.HF = false;
 	}else if(bootROMS == "SBG2"){
-		A = 0xFF;
+		reg.A = 0xFF;
 
-		B = 0x00;
-		C = 0x14;
+		reg.B = 0x00;
+		reg.C = 0x14;
 
-		D = 0x00;
-		E = 0x00;
+		reg.D = 0x00;
+		reg.E = 0x00;
 
-		H = 0xC0;
-		L = 0x60;
+		reg.H = 0xC0;
+		reg.L = 0x60;
 
-		SP = 0xFFFE;
-		PC = 0x0100;
+		reg.SP = 0xFFFE;
+		reg.PC = 0x0100;
 
-		ZF = false;
-		CF = false;
+		fl.ZF = false;
+		fl.CF = false;
 
-		NF = false;
-		HF = false;
+		fl.NF = false;
+		fl.HF = false;
 	}else if(bootROMS == "CGB-DMG"){
-		A = 0x11;
+		reg.A = 0x11;
 		if(isAnyLicensee01){
-			B = sumOfTitleBytes;
+			reg.B = sumOfTitleBytes;
 		}else{
-			B = 0x00;
+			reg.B = 0x00;
 		}
 			
 
 
-		C = 0x00;
+		reg.C = 0x00;
 
-		D = 0x00;
-		E = 0x08;
+		reg.D = 0x00;
+		reg.E = 0x08;
 
-		if(B == 0x43 || B == 0x58){
-			H = 0x99;
-			L = 0x1A;
+		if(reg.B == 0x43 || reg.B == 0x58){
+			reg.H = 0x99;
+			reg.L = 0x1A;
 		}else{
-			H = 0x00;
-			L = 0x7C;
+			reg.H = 0x00;
+			reg.L = 0x7C;
 		}
 
-		SP = 0xFFFE;
-		PC = 0x0100;
+		reg.SP = 0xFFFE;
+		reg.PC = 0x0100;
 
-		ZF = true;
-		CF = false;
+		fl.ZF = true;
+		fl.CF = false;
 
-		NF = false;
-		HF = false;
+		fl.NF = false;
+		fl.HF = false;
 	}else if(bootROMS == "AGB-DMG"){
-		A = 0x11;
+		reg.A = 0x11;
 		if(isAnyLicensee01){
-			B = sumOfTitleBytes + 1;
+			reg.B = sumOfTitleBytes + 1;
 		}else{
-			B = 0x00;
+			reg.B = 0x00;
 		}
 			
 
 
-		C = 0x00;
+		reg.C = 0x00;
 
-		D = 0x00;
-		E = 0x08;
+		reg.D = 0x00;
+		reg.E = 0x08;
 
-		if(B == 0x44 || B == 0x59){
-			H = 0x99;
-			L = 0x1A;
+		if(reg.B == 0x44 || reg.B == 0x59){
+			reg.H = 0x99;
+			reg.L = 0x1A;
 		}else{
-			H = 0x00;
-			L = 0x7C;
+			reg.H = 0x00;
+			reg.L = 0x7C;
 		}
 		
-		SP = 0xFFFE;
-		PC = 0x0100;
+		reg.SP = 0xFFFE;
+		reg.PC = 0x0100;
 
 		// Su come vengono settati questi due flag c'e' molta confusione.
 		// Sono sulla base delle operazioni precedenti, qui sotto incollo la logica su come settarli
@@ -181,51 +191,51 @@ LR35902::LR35902(std::string bootROMS = "DMG0", bool isChecksum00 = false, bool 
 		//																																	****
 		// Anche se in un incremento non verra mai fuori zero, e il flag H si setta solo nelle sottrazioni.
 		// Qualcuno puo' controllare piu a fondo tysm @0hM1C1uf1 @AleBitCode @Cyb3s
-		ZF = false;
-		HF = false;
+		fl.ZF = false;
+		fl.HF = false;
 
-		CF = false;
-		NF = false;
+		fl.CF = false;
+		fl.NF = false;
 	}else if(bootROMS == "CGB"){
-		A = 0x11;
+		reg.A = 0x11;
 
-		B = 0x00;	
-		C = 0x00;
+		reg.B = 0x00;	
+		reg.C = 0x00;
 
-		D = 0xFF;
-		E = 0x56;
+		reg.D = 0xFF;
+		reg.E = 0x56;
 
-		H = 0x00;
-		L = 0x0D;
+		reg.H = 0x00;
+		reg.L = 0x0D;
 
-		SP = 0xFFFE;
-		PC = 0x0100;
+		reg.SP = 0xFFFE;
+		reg.PC = 0x0100;
 
-		ZF = true;
-		CF = false;
+		fl.ZF = true;
+		fl.CF = false;
 
-		NF = false;
-		HF = false;
+		fl.NF = false;
+		fl.HF = false;
 	}else if(bootROMS == "AGB"){
-		A = 0x11;
+		reg.A = 0x11;
 
-		B = 0x01;	
-		C = 0x00;
+		reg.B = 0x01;	
+		reg.C = 0x00;
 
-		D = 0xFF;
-		E = 0x56;
+		reg.D = 0xFF;
+		reg.E = 0x56;
 
-		H = 0x00;
-		L = 0x0D;
+		reg.H = 0x00;
+		reg.L = 0x0D;
 
-		SP = 0xFFFE;
-		PC = 0x0100;
+		reg.SP = 0xFFFE;
+		reg.PC = 0x0100;
 
-		ZF = false;
-		CF = false;
+		fl.ZF = false;
+		fl.CF = false;
 
-		NF = false;
-		HF = false;
+		fl.NF = false;
+		fl.HF = false;
 	}else{
 		std::cerr << "Errore: Boot Rom non riconosciuta";
 	}
@@ -238,27 +248,30 @@ LR35902::LR35902(std::string bootROMS = "DMG0", bool isChecksum00 = false, bool 
 */ 
 void LR35902::UpdateRegister(Byte data, char r1)
 {
+	cpu_register reg;
+	
+	
 	switch (r1) {
 	case 'A':
-		A = data;
+		reg.A = data;
 		break;
 	case 'B':
-		B = data;
+		reg.B = data;
 		break;
 	case 'C':
-		C = data;
+		reg.C = data;
 		break;
 	case 'D':
-		D = data;
+		reg.D = data;
 		break;
 	case 'E':
-		E = data;
+		reg.E = data;
 		break;
 	case 'H':
-		H = data;
+		reg.H = data;
 		break;
 	case 'L':
-		L = data;
+		reg.L = data;
 		break;
 	default:
 		std::cerr << "RunTimeError_FlagNotFound";
@@ -274,18 +287,20 @@ void LR35902::UpdateRegister(Byte data, char r1)
 */ 
 void LR35902::UpdateFlag(char f, bool state = true)
 {
+	flags fl;
+
 	switch (f) {
 	case 'Z':
-		ZF = state;
+		fl.ZF = state;
 		break;
 	case 'C':
-		CF = state;
+		fl.CF = state;
 		break;
 	case 'N':
-		NF = state;
+		fl.NF = state;
 		break;
 	case 'H':
-		HF = state;
+		fl.HF = state;
 		break;
 	default:
 		std::cerr << "RunTimeError_FlagNotFound"; // Sembra troppo professionale infatti non l'ho scritto io
@@ -299,17 +314,19 @@ void LR35902::UpdateFlag(char f, bool state = true)
 */ 
 void LR35902::UpdateRegister(Word data, std::string rx)
 {
+	cpu_register reg;
+
 	if (rx == "BC") {
-		B = ExtractUpper(data);
-		C = ExtractLower(data);
+		reg.B = ExtractUpper(data);
+		reg.C = ExtractLower(data);
 	}
 	else if (rx == "DE") {
-		D = ExtractUpper(data);
-		E = ExtractLower(data);
+		reg.D = ExtractUpper(data);
+		reg.E = ExtractLower(data);
 	}
 	else if (rx == "HL") {
-		H = ExtractUpper(data);
-		L = ExtractLower(data);
+		reg.H = ExtractUpper(data);
+		reg.L = ExtractLower(data);
 	}
 }
 
@@ -319,22 +336,23 @@ void LR35902::UpdateRegister(Word data, std::string rx)
 */ 
 Byte LR35902::GetRegister(char c)
 {
+	cpu_register reg;
 	switch (c)
 	{
 	case 'A':
-		return A;
+		return reg.A;
 	case 'B':
-		return B;
+		return reg.B;
 	case 'C':
-		return C;
+		return reg.C;
 	case 'D':
-		return D;
+		return reg.D;
 	case 'E':
-		return E;
+		return reg.E;
 	case 'H':
-		return H;
+		return reg.H;
 	case 'L':
-		return L;									
+		return reg.L;									
 	default:
 		std::cerr << "RunTimeError_RegisterNotFound\n";
 	}
@@ -346,17 +364,20 @@ Byte LR35902::GetRegister(char c)
  * @return La word data dalla somma di parte alta + parte bassa (0x0000)
 */
 Word LR35902::GetDoubleRegister(std::string rx){
+	
+	cpu_register reg;
+
 	if (rx == "BC") {
-		Word highByte = (B << 8);
-		return highByte + C;
+		Word highByte = (reg.B << 8);
+		return highByte + reg.C;
 	}
 	else if (rx == "DE") {
-		Word highByte = (D << 8);
-		return highByte + E;
+		Word highByte = (reg.D << 8);
+		return highByte + reg.E;
 	}
 	else if (rx == "HL") {
-		Word highByte = (H << 8);
-		return highByte + L;
+		Word highByte = (reg.H << 8);
+		return highByte + reg.L;
 	}
    return 0x0000;
 }
@@ -368,16 +389,17 @@ Word LR35902::GetDoubleRegister(std::string rx){
 */ 
 bool LR35902::GetFlag(char c)
 {
+	flags fl;
 	switch (c)
 	{
 	case 'Z':
-		return ZF;
+		return fl.ZF;
 	case 'C':
-		return CF;
+		return fl.CF;
 	case 'N':
-		return NF;
+		return fl.NF;
 	case 'H':
-		return HF;							
+		return fl.HF;							
 	default:
 		std::cerr << "RunTimeError_FlagNotFound\n";
 	}
@@ -402,4 +424,26 @@ Byte LR35902::ExtractLower(Word data)
 {
 	Byte lowByte = data & 0xFF; // Estrai il byte meno significativo
 	return lowByte;
+}
+
+LR35902::cpu_context ctx ={0}; //0 corrisponde ad un valore di prova che va ad halt
+
+static void fetch_ins(){
+	ctx.cur_opcode=B_Read(ctx.regs.PC++);
+	ctx.cur_inst=instruction_by_opcode(ctx.cur_opcode);
+};
+
+
+static void fetch_data();
+static void execute();
+
+bool LR35902::cpu_step(){
+	if(!ctx.halt){
+		fetch_ins();
+		fetch_data();
+		execute();
+	}
+	
+	
+	return false;
 }

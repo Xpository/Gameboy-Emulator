@@ -39,7 +39,6 @@ class Memory{
     public:
         Memory(Byte*);
 
-        Byte Read(Word);
-        void Write(Word, Byte);
+        
         
 };

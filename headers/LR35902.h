@@ -2,6 +2,8 @@
 
 #include "types.h"
 #include "cartridge.h"
+#include "opcodes.h"
+#include "bus.h"
 #include <string>
 using namespace nstdtypes;
 
@@ -16,6 +18,7 @@ class LR35902 {
 				SP, Stack Pointer
 				PC, Program Counter
 		*/
+	struct cpu_register{
 		Byte A; // high
 
 		Byte B; // high
@@ -29,6 +32,7 @@ class LR35902 {
 
 		Word SP; // Stack pointer
 		Word PC; // Program counter
+	};
 		/*
 			I Flag sono:
 				Zero Flag (z) settato a zero se il risultato dell'operazione e' zero.
@@ -46,12 +50,16 @@ class LR35902 {
 					Poiche' esistono solo due flag (C e H) per indicare i riporti dei cifre BCD, DAA e' inefficace per operazioni a 16 bit
 					(che hanno 4 cifre) e l'uso per le operazioni INC/DEC (che non influiscono sul flag C) ha dei limiti.
 		*/
-
+		struct flags{
 		bool ZF;
 		bool CF;
 
 		bool NF;
 		bool HF;
+		};
+
+
+		
 
 
 		Byte ExtractUpper(Word);
@@ -68,5 +76,20 @@ class LR35902 {
 		Byte GetRegister(char);
         Word GetDoubleRegister(std::string rx);
         bool GetFlag(char);
+
+		struct cpu_context{
+		cpu_register regs;
+
+		//fetching
+		Word fetch_data;
+		Word mem_dest;
+		Byte cur_opcode;
+		instruction *cur_inst;
+
+		bool halt;
+		bool stepping;
+		};
+
+		bool cpu_step();
 };
 

@@ -131,27 +131,9 @@ struct instruction
 
 
 
-class Opcodes {
-	public:
-
-	//roba inutile di merda non sapete fare un cazzo
-
-		// Opcode a 0 operandi byte
-		void ExecuteOpcodes(LR35902&, Byte);
-		// Opcode a 1 operando byte (registro h/l)
-		void ExecuteOpcodes(LR35902&, Byte, Byte);
-		// Opcode a 1 operando word(registri rx)
-		void ExecuteOpcodes(LR35902&, Byte, Word);
-		// Opcode a 2 operandi byte
-		void ExecuteOpcodes(LR35902&, Byte, Byte, Byte);
-		// Opcode a 2 operandi word
-		void ExecuteOpcodes(LR35902&, Byte, Word, Word);
-
-	private:
-		Memory memory;
 
 
-};
+instruction *instruction_by_opcode(Byte opcode); //ritorna l'indirizzo dell'opcode
 
 
 

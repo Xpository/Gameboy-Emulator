@@ -1,6 +1,6 @@
 #include "../headers/cartridge.h"
 #include "../headers/types.h"
-#include "cartridge.h"
+#include "../headers/cartridge.h"
 
 using namespace nstdtypes;
 
