@@ -20,7 +20,7 @@ Byte Memory::Read(Word address)
     if(address <= 0x3FFF){
 		return cartridgeROM[address];
 	}else if(address >= 0x4000 && address <= 0x7FFF){
-		size_t offset = (romBank -1) * 0x4000 + (address -0x4000);
+		size_t offset = (romBank -1) * 0x4000 + (address - 0x4000);
 		return cartridgeROM[offset];
 	}else if(address >= 0xA000 && address <= 0xBFFF){
 		if(!ramEnabled) return 0xFF;
