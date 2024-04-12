@@ -18,7 +18,7 @@ class LR35902 {
 				SP, Stack Pointer
 				PC, Program Counter
 		*/
-	struct cpu_register{
+	struct CPU_Registers{
 		Byte A; // high
 
 		Byte B; // high
@@ -42,7 +42,7 @@ class LR35902 {
 					- Quando il risultato di una sottrazione o di un confronto e' inferiore a zero (come nei processori Z80 e x86, ma diversamente nei processori 65XX e ARM).
 					- Quando un'operazione di rotate/shift sposta fuori un bit "1".
 
-				BCD Flags (N, H):
+				BCD Flag (N, H):
 					Queste flag sono utilizzate solo dall'istruzione DAA. N indica se l'istruzione precedente e' stata una sottrazione,
 					mentre H indica il riporto per i 4 bit meno significativi del risultato. DAA utilizza anche il flag C,
 					che deve indicare il riporto per i 4 bit pie' significativi. Dopo aver aggiunto/sottratto due numeri BCD,
@@ -50,15 +50,16 @@ class LR35902 {
 					Poiche' esistono solo due flag (C e H) per indicare i riporti dei cifre BCD, DAA e' inefficace per operazioni a 16 bit
 					(che hanno 4 cifre) e l'uso per le operazioni INC/DEC (che non influiscono sul flag C) ha dei limiti.
 		*/
-		struct flags{
-		bool ZF;
-		bool CF;
+		struct Flags{
+			bool ZF;
+			bool CF;
 
-		bool NF;
-		bool HF;
+			bool NF;
+			bool HF;
 		};
 
-
+		struct CPU_Registers reg;
+		struct Flags fl;
 		
 
 
@@ -77,19 +78,19 @@ class LR35902 {
         Word GetDoubleRegister(std::string rx);
         bool GetFlag(char);
 
-		struct cpu_context{
-		cpu_register regs;
+		struct CPU_Context{
+			CPU_Registers registers;
 
-		//fetching
-		Word fetch_data;
-		Word mem_dest;
-		Byte cur_opcode;
-		instruction *cur_inst;
+			//fetching
+			Word fetchedData;
+			Word memoryDestination;
+			Byte currentOpcode;
+			instruction *currentInstruction;
 
-		bool halt;
-		bool stepping;
+			bool halt;
+			bool stepping;
 		};
 
-		bool cpu_step();
+		bool CPU_Step();
 };
 

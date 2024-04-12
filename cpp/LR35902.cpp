@@ -11,14 +11,9 @@
 
 LR35902::LR35902(std::string bootROMS = "DMG0", bool isChecksum00 = false, bool isAnyLicensee01 = false, Byte sumOfTitleBytes = 0x00)
 {
-	cpu_register reg;
-	flags fl;
+
 
 	if(bootROMS == "DMG0"){
-
-		
-
-
 		reg.A = 0x01;
 
 		reg.B = 0xFF;
@@ -248,9 +243,6 @@ LR35902::LR35902(std::string bootROMS = "DMG0", bool isChecksum00 = false, bool 
 */ 
 void LR35902::UpdateRegister(Byte data, char r1)
 {
-	cpu_register reg;
-	
-	
 	switch (r1) {
 	case 'A':
 		reg.A = data;
@@ -287,8 +279,6 @@ void LR35902::UpdateRegister(Byte data, char r1)
 */ 
 void LR35902::UpdateFlag(char f, bool state = true)
 {
-	flags fl;
-
 	switch (f) {
 	case 'Z':
 		fl.ZF = state;
@@ -314,8 +304,6 @@ void LR35902::UpdateFlag(char f, bool state = true)
 */ 
 void LR35902::UpdateRegister(Word data, std::string rx)
 {
-	cpu_register reg;
-
 	if (rx == "BC") {
 		reg.B = ExtractUpper(data);
 		reg.C = ExtractLower(data);
@@ -336,7 +324,6 @@ void LR35902::UpdateRegister(Word data, std::string rx)
 */ 
 Byte LR35902::GetRegister(char c)
 {
-	cpu_register reg;
 	switch (c)
 	{
 	case 'A':
@@ -364,9 +351,6 @@ Byte LR35902::GetRegister(char c)
  * @return La word data dalla somma di parte alta + parte bassa (0x0000)
 */
 Word LR35902::GetDoubleRegister(std::string rx){
-	
-	cpu_register reg;
-
 	if (rx == "BC") {
 		Word highByte = (reg.B << 8);
 		return highByte + reg.C;
@@ -389,7 +373,6 @@ Word LR35902::GetDoubleRegister(std::string rx){
 */ 
 bool LR35902::GetFlag(char c)
 {
-	flags fl;
 	switch (c)
 	{
 	case 'Z':
@@ -426,19 +409,27 @@ Byte LR35902::ExtractLower(Word data)
 	return lowByte;
 }
 
-LR35902::cpu_context ctx ={0}; //0 corrisponde ad un valore di prova che va ad halt
+
+
+LR35902::CPU_Context thisContext ={0}; //0 corrisponde ad un valore di prova che va ad halt
+
 
 static void fetch_ins(){
-	ctx.cur_opcode=B_Read(ctx.regs.PC++);
-	ctx.cur_inst=instruction_by_opcode(ctx.cur_opcode);
+	thisContext.currentOpcode=B_Read(thisContext.registers.PC++);
+	thisContext.currentInstruction=instruction_by_opcode(thisContext.currentOpcode);
 };
 
 
-static void fetch_data();
-static void execute();
+static void fetch_data(){
 
-bool LR35902::cpu_step(){
-	if(!ctx.halt){
+}
+
+static void execute(){
+
+}
+
+bool LR35902::CPU_Step(){
+	if(!thisContext.halt){
 		fetch_ins();
 		fetch_data();
 		execute();
