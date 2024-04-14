@@ -3,6 +3,7 @@
 ### Started 11/03/24
 
 **ITALIAN** 🇮🇹
+
 Progetto creato al fine di consegnarlo come *capolavoro* per la piattaforma
 **Unica Istruzione**. L'idea del progetto sarebbe un programma che permette
 di scaricare ed emulare giochi retrò in modo totalmente gratuito.
@@ -11,6 +12,7 @@ Per ora le risorse sono tutte impiegate sull'apprendimento e lo sviluppo
 di un primo emulatore, quello per Gameboy™
 
 **ENGLISH** 🇺🇸
+
 Progect creato to be uploaded on the **Unica Istruzione** web site,
 as part of the *capolavoro* school project. The base idead of the 
 project is a program that lets you downloand and emulate games
