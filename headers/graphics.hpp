@@ -1,8 +1,5 @@
-#pragma once 
+#include "types.hpp"
 
-#include "types.h"
-
-using namespace nstdtypes;
 
 class PPU{
     public:

@@ -1,11 +1,6 @@
-#pragma once
-
-#include "types.h"
-#include "LR35902.h"
-#include "memory.h"
-#include "memory.h"
-using namespace nstdtypes;
-
+#include "types.hpp"
+#include "memory.hpp"
+#include <map>
 
  enum tipo{ //--> typedef da un tag al tipo in questo caso ad enum
 
@@ -114,10 +109,9 @@ using namespace nstdtypes;
 
 };
 
-
 // una volta necessaria un istruzione viene chiamata la struct passandoli le varie
-// variabili di tipo enum, i quali possibili contenuti sono stati inseriti in 
-// precedenza nella correspettiva enum
+		// variabili di tipo enum, i quali possibili contenuti sono stati inseriti in 
+		// precedenza nella correspettiva enum
 
 struct instruction 
 {
@@ -130,10 +124,7 @@ struct instruction
 };
 
 
-
-
-
-instruction *instruction_by_opcode(Byte opcode); //ritorna l'indirizzo dell'opcode
+instruction* instruction_by_opcode(Byte opcode); //ritorna l'indirizzo dell'opcode
 
 
 

@@ -1,240 +1,14 @@
-#include "../headers/LR35902.h"
-#include "../headers/memory.h"
+#include "../headers/LR35902.hpp"
 #include <iostream>
-#include <string>
+
 
 
 //personalmente penso che questa dichiarazione qua sotto debbe essere contenata in cartridge visto che 
 //la riguarda totalmente 
 
+// Ehm casotti fai poco il grosso eh
 
 
-LR35902::LR35902(std::string bootROMS = "DMG0", bool isChecksum00 = false, bool isAnyLicensee01 = false, Byte sumOfTitleBytes = 0x00)
-{
-
-
-	if(bootROMS == "DMG0"){
-		reg.A = 0x01;
-
-		reg.B = 0xFF;
-		reg.C = 0x13;
-
-		reg.D = 0x00;
-		reg.E = 0xC1;
-
-		reg.H = 0x84;
-		reg.L = 0x03;
-
-		reg.SP = 0xFFFE;
-		reg.PC = 0x0100;
-
-		fl.ZF = false;
-		fl.CF = false;
-
-		fl.NF = false;
-		fl.HF = false;
-	}else if(bootROMS == "DMG"){
-		reg.A = 0x01;
-
-		reg.B = 0x00;
-		reg.C = 0x13;
-
-		reg.D = 0x00;
-		reg.E = 0xD8;
-
-		reg.H = 0x01;
-		reg.L = 0x4D;
-
-		reg.SP = 0xFFFE;
-		reg.PC = 0x0100;
-		
-		fl.ZF = true;
-		fl.NF = false;
-		if(isChecksum00){
-			fl.CF = false;
-			fl.HF = false;
-		}else{
-			fl.CF = true;
-			fl.HF = true;
-		}
-	}else if(bootROMS == "MGB"){
-		reg.A = 0xFF;
-
-		reg.B = 0x00;
-		reg.C = 0x13;
-
-		reg.D = 0x00;
-		reg.E = 0xD8;
-
-		reg.H = 0x01;
-		reg.L = 0x4D;
-
-		reg.SP = 0xFFFE;
-		reg.PC = 0x0100;
-		
-		fl.ZF = true;
-		fl.NF = false;
-		if(isChecksum00){
-			fl.CF = false;
-			fl.HF = false;
-		}else{
-			fl.CF = true;
-			fl.HF = true;
-		}
-	}else if(bootROMS == "SGB"){
-		reg.A = 0x01;
-
-		reg.B = 0x00;
-		reg.C = 0x14;
-
-		reg.D = 0x00;
-		reg.E = 0x00;
-
-		reg.H = 0xC0;
-		reg.L = 0x60;
-
-		reg.SP = 0xFFFE;
-		reg.PC = 0x0100;
-
-		fl.ZF = false;
-		fl.CF = false;
-
-		fl.NF = false;
-		fl.HF = false;
-	}else if(bootROMS == "SBG2"){
-		reg.A = 0xFF;
-
-		reg.B = 0x00;
-		reg.C = 0x14;
-
-		reg.D = 0x00;
-		reg.E = 0x00;
-
-		reg.H = 0xC0;
-		reg.L = 0x60;
-
-		reg.SP = 0xFFFE;
-		reg.PC = 0x0100;
-
-		fl.ZF = false;
-		fl.CF = false;
-
-		fl.NF = false;
-		fl.HF = false;
-	}else if(bootROMS == "CGB-DMG"){
-		reg.A = 0x11;
-		if(isAnyLicensee01){
-			reg.B = sumOfTitleBytes;
-		}else{
-			reg.B = 0x00;
-		}
-			
-
-
-		reg.C = 0x00;
-
-		reg.D = 0x00;
-		reg.E = 0x08;
-
-		if(reg.B == 0x43 || reg.B == 0x58){
-			reg.H = 0x99;
-			reg.L = 0x1A;
-		}else{
-			reg.H = 0x00;
-			reg.L = 0x7C;
-		}
-
-		reg.SP = 0xFFFE;
-		reg.PC = 0x0100;
-
-		fl.ZF = true;
-		fl.CF = false;
-
-		fl.NF = false;
-		fl.HF = false;
-	}else if(bootROMS == "AGB-DMG"){
-		reg.A = 0x11;
-		if(isAnyLicensee01){
-			reg.B = sumOfTitleBytes + 1;
-		}else{
-			reg.B = 0x00;
-		}
-			
-
-
-		reg.C = 0x00;
-
-		reg.D = 0x00;
-		reg.E = 0x08;
-
-		if(reg.B == 0x44 || reg.B == 0x59){
-			reg.H = 0x99;
-			reg.L = 0x1A;
-		}else{
-			reg.H = 0x00;
-			reg.L = 0x7C;
-		}
-		
-		reg.SP = 0xFFFE;
-		reg.PC = 0x0100;
-
-		// Su come vengono settati questi due flag c'e' molta confusione.
-		// Sono sulla base delle operazioni precedenti, qui sotto incollo la logica su come settarli
-		// ****
-		//		To determine the flags, take the B register you would have gotten on CGB3, and inc it. 
-		// 		(To be precise: an inc b is the last operation to touch the flags.) The carry and direction flags are always clear, though.
-		//																																	****
-		// Anche se in un incremento non verra mai fuori zero, e il flag H si setta solo nelle sottrazioni.
-		// Qualcuno puo' controllare piu a fondo tysm @0hM1C1uf1 @AleBitCode @Cyb3s
-		fl.ZF = false;
-		fl.HF = false;
-
-		fl.CF = false;
-		fl.NF = false;
-	}else if(bootROMS == "CGB"){
-		reg.A = 0x11;
-
-		reg.B = 0x00;	
-		reg.C = 0x00;
-
-		reg.D = 0xFF;
-		reg.E = 0x56;
-
-		reg.H = 0x00;
-		reg.L = 0x0D;
-
-		reg.SP = 0xFFFE;
-		reg.PC = 0x0100;
-
-		fl.ZF = true;
-		fl.CF = false;
-
-		fl.NF = false;
-		fl.HF = false;
-	}else if(bootROMS == "AGB"){
-		reg.A = 0x11;
-
-		reg.B = 0x01;	
-		reg.C = 0x00;
-
-		reg.D = 0xFF;
-		reg.E = 0x56;
-
-		reg.H = 0x00;
-		reg.L = 0x0D;
-
-		reg.SP = 0xFFFE;
-		reg.PC = 0x0100;
-
-		fl.ZF = false;
-		fl.CF = false;
-
-		fl.NF = false;
-		fl.HF = false;
-	}else{
-		std::cerr << "Errore: Boot Rom non riconosciuta";
-	}
-}
 
 
 /* UpdateRegister modifica il valore di un registro
@@ -409,22 +183,46 @@ Byte LR35902::ExtractLower(Word data)
 	return lowByte;
 }
 
+LR35902::LR35902(std::string filepath)
+{
+	reg.A = 0x01;
 
+	reg.B = 0xFF;
+	reg.C = 0x13;
 
-LR35902::CPU_Context thisContext ={0}; //0 corrisponde ad un valore di prova che va ad halt
+	reg.D = 0x00;
+	reg.E = 0xC1;
 
+	reg.H = 0x84;
+	reg.L = 0x03;
 
-static void fetch_ins(){
-	thisContext.currentOpcode=B_Read(thisContext.registers.PC++);
+	reg.SP = 0xFFFE;
+	reg.PC = 0x0100;
+
+	fl.ZF = false;
+	fl.CF = false;
+
+	fl.NF = false;
+	fl.HF = false;
+
+	thisContext = {0};
+
+	// Very cool pointer shit :)
+	cart = new Cartridge(filepath);
+	mem = new Memory(cart->GetData(), cart->GetRomSize());
+}
+
+void LR35902::fetch_ins(){
+	thisContext.currentOpcode=cart->ReadCart(thisContext.registers.PC++);
 	thisContext.currentInstruction=instruction_by_opcode(thisContext.currentOpcode);
 };
 
 
-static void fetch_data(){
+void LR35902::fetch_data(){
 
 }
 
-static void execute(){
+void LR35902::execute(){
 
 }
 

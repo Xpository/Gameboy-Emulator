@@ -1,10 +1,11 @@
-#include "memory.h"
+#include "../headers/memory.hpp"
 
 // Costruttore inizializza la classe
 // @param ROM puntatore della ROM
-Memory::Memory(Byte* datas) 
+Memory::Memory(Byte* datas, unsigned int size) 
 {
-	for(int i = 0; i < 8 * 1024 * 1024; i++){
+	
+	for(int i = 0; i < size; i++){
 		cartridgeROM[i] = datas[i];
 	}
 

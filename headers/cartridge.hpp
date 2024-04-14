@@ -1,13 +1,10 @@
-#pragma once
-
-#include "types.h"
+#include "types.hpp"
 #include <fstream>
 #include <string>
 #include <map>
 #include <iostream>
 
  
-using namespace nstdtypes;
 
 class Cartridge{
     public:
@@ -28,6 +25,7 @@ class Cartridge{
 
         Byte ReadCart(Word);
         Byte* ReadFromToCart(Word, Word);
+        Byte* GetData();
     private:
         Byte* data;
         

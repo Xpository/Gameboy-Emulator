@@ -1,8 +1,7 @@
-#include "../headers/cartridge.h"
-#include "../headers/types.h"
-#include "../headers/cartridge.h"
+#include "../headers/cartridge.hpp"
+#include "../headers/types.hpp"
 
-using namespace nstdtypes;
+
 
 
 
@@ -449,7 +448,10 @@ Byte* Cartridge::ReadFromToCart(Word startAddress, Word endAddress)
     return dataArray;
 }
 
-
+Byte *Cartridge::GetData()
+{
+    return data;
+}
 
 bool Cartridge::ValidateCartridge()
 {

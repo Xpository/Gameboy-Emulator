@@ -1,13 +1,20 @@
-#pragma once
-
-#include "types.h"
-#include "cartridge.h"
-#include "opcodes.h"
-#include "bus.h"
+#include "types.hpp"
+#include "cartridge.hpp"
+#include "opcodes.hpp"
+#include "memory.hpp"
+#include "bus.hpp"
 #include <string>
-using namespace nstdtypes;
 
 // casotti stai lavorando, bravo russazzo ciuccia cazzo 
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
 
 class LR35902 {
 	private:
@@ -18,21 +25,21 @@ class LR35902 {
 				SP, Stack Pointer
 				PC, Program Counter
 		*/
-	struct CPU_Registers{
-		Byte A; // high
+		struct CPU_Registers{
+			Byte A; // high
 
-		Byte B; // high
-		Byte C; // low
+			Byte B; // high
+			Byte C; // low
 
-		Byte D; // high
-		Byte E; // low
+			Byte D; // high
+			Byte E; // low
 
-		Byte H; // high
-		Byte L; // low
+			Byte H; // high
+			Byte L; // low
 
-		Word SP; // Stack pointer
-		Word PC; // Program counter
-	};
+			Word SP; // Stack pointer
+			Word PC; // Program counter
+		};
 		/*
 			I Flag sono:
 				Zero Flag (z) settato a zero se il risultato dell'operazione e' zero.
@@ -58,16 +65,19 @@ class LR35902 {
 			bool HF;
 		};
 
+		
+
 		struct CPU_Registers reg;
 		struct Flags fl;
 		
-
+		Cartridge* cart = nullptr;
+		Memory* mem = nullptr;
 
 		Byte ExtractUpper(Word);
 		Byte ExtractLower(Word);
 		
 	public:
-		LR35902(std::string, bool, bool, Byte);
+		LR35902(std::string);
 
 
 		void UpdateRegister(Byte, char); // si updateta una parte del registro (basso o alto)
@@ -91,6 +101,11 @@ class LR35902 {
 			bool stepping;
 		};
 
+		CPU_Context thisContext;
+
 		bool CPU_Step();
+		void fetch_ins();
+		void fetch_data();
+		void execute();
 };
 

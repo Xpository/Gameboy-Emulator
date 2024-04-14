@@ -1,10 +1,11 @@
-#pragma once
+#ifndef MEMORY_HPP
+#define MEMORY_HPP
 
-#include "types.h"
+#include "types.hpp"
 #include "array"
 #include <string>
 
-using namespace nstdtypes;
+
 
 
 class Memory{
@@ -37,8 +38,15 @@ class Memory{
         bool bankingMode; 
         
     public:
-        Memory(Byte*);
+        Memory(Byte*, unsigned int);
+        
+        Byte Read(Word);
+        void Write(Word, Byte);
 
         
         
 };
+
+
+
+#endif
