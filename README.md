@@ -21,6 +21,8 @@ from different retro consoles for free.
 For now all resources are used to learn and develop the first emulator
 that is for Gameboy™
 
+---
+
 ### Update 14/04/24
 
 **ITALIAN** 🇮🇹 
