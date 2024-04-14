@@ -13,7 +13,7 @@ di un primo emulatore, quello per Gameboy™
 
 **ENGLISH** 🇺🇸
 
-Progect creato to be uploaded on the **Unica Istruzione** web site,
+Project created to be uploaded on the **Unica Istruzione** web site,
 as part of the *capolavoro* school project. The base idead of the 
 project is a program that lets you downloand and emulate games
 from different retro consoles for free.
