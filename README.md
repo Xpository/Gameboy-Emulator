@@ -4,17 +4,17 @@
 <details>
   <summary>🗂️ Table of Contents</summary>
   <ol>
-    <li><a href="#todo-todos">⚒️ TODO</a></li>
-    <li><a href="#updates-up">📥 Updates</a></li>
+    <li><a href="#todo">⚒️ TODO</a></li>
+    <li><a href="#updates">📥 Updates</a></li>
         <ol>
-            <li><a href="#started-110324-up1">1️⃣ First Update</a></li>
-            <li><a href="#update-140424-up2">2️⃣ Second Update</a></li>
-            <li><a href="#update-160424-up3">3️⃣ Third Update</a></li>
+            <li><a href="#started-110324">1️⃣ First Update</a></li>
+            <li><a href="#update-140424">2️⃣ Second Update</a></li>
+            <li><a href="#update-160424">3️⃣ Third Update</a></li>
         </ol>
   </ol>
 </details>
 
-## TODO {#todos}
+## TODO 
 
  - [x] CPU Base
  - [x] Memory 
@@ -32,8 +32,8 @@
  - [ ] Optimization
     - Optimize most of the code
 
-## Updates {#up}
-### Started 11/03/24 {#up1}
+## Updates 
+### Started 11/03/24 
 
 **ITALIAN** 🇮🇹
 
@@ -56,7 +56,7 @@ that is for Gameboy™
 
 ---
 
-### Update 14/04/24 {#up2}
+### Update 14/04/24 
 
 **ITALIAN** 🇮🇹 
 
@@ -189,7 +189,7 @@ we have for the time being.
 
 ---
 
-### Update 16/04/24 {#up3}
+### Update 16/04/24 
 
 ### Come installare OpenGL (SOLO WINDOWS)
 
