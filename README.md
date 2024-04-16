@@ -1,5 +1,25 @@
 # Xpository - Multi retro-console emulator.
 
+
+<details>
+  <summary>🗂️ Table of Contents</summary>
+  <ol>
+    <li><a href="##-TODO">⚒️ TODO</a></li>
+    <li><a href="##-Updates">📥 Updates</a></li>
+        <ol>
+            <li><a href="###-Started-11/03/24">1️⃣ First Update</a></li>
+            <li><a href="###-Started-14/04/24">2️⃣ Second Update</a></li>
+            <li><a href="###-Started-16/04/24 ">3️⃣ Third Update</a></li>
+        </ol>
+  </ol>
+</details>
+
+## TODO
+
+ - []
+ - []
+
+## Updates
 ### Started 11/03/24
 
 **ITALIAN** 🇮🇹
@@ -40,7 +60,7 @@ here are the *args* we used while developing.
 Even if its primitive and not so scalable way of doing it, its the best
 we have for the time being.
 
-**LAUNCH.JSON**
+#### **LAUNCH.JSON**
 ```
 {
     "version": "2.0.0",
@@ -95,7 +115,7 @@ we have for the time being.
     ]
 }
 ```
-**TASKS.JSON -> Args** 
+#### **TASKS.JSON -> Args** 
 ```
 "args": [
             "-fdiagnostics-color=always",
@@ -114,6 +134,142 @@ we have for the time being.
             "${workspaceFolder}/headers/memory.hpp",
             "${workspaceFolder}/main.cpp",
             "-o",
-            "${workspaceFolder}/build/main.exe"
+            "${workspaceFolder}/build/main.exe",
+            "-I",
+            "C:\\OpenGL\\glfw-3.4.bin.WIN64\\include",
+            "-I",
+            "C:\\OpenGL\\glad\\include",
+            "-L",
+            "C:\\OpenGL\\glfw-3.4.bin.WIN64\\lib-mingw-w64",
+            "C:\\OpenGL\\glfw-3.4.bin.WIN64\\lib-mingw-w64\\libglfw3dll.a",
+            "C:\\OpenGL\\glfw-3.4.bin.WIN64\\lib-mingw-w64\\glfw3.dll",
+            "-lopengl32",
         ],
 ```
+
+#### **C_CPP_PROPERTIES.JSON**
+```
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "C:\\OpenGL\\glfw-3.4.bin.WIN64\\include",
+                "C:\\OpenGL\\glad\\include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "windowsSdkVersion": "10.0.22621.0",
+            "compilerPath": "C:/Program Files (x86)/mingw64/bin/g++.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "windows-gcc-x64"
+        }
+    ],
+    "version": 4
+}
+```
+
+---
+
+### Update 16/04/24 
+
+### Come installare OpenGL (SOLO WINDOWS)
+
+Qui di seguito troverete i passaggi per l'installazione di OpenGL e Glad.
+
+1. Scaricare la libreria [GLFW](https://www.glfw.org/download.html) per OpenGL e cliccare su **64-bit Windows binaries**
+2. Scaricare [Glad](https://glad.dav1d.de/). Sul sito selezionare i seguenti parametri
+    - Language: C/C++
+    - Specification: OpenGL
+    - Profile: Core
+    - API: 
+        1. gl -> 3.3
+        2. gles1 -> None
+        3. gles2 -> None
+        4. gles3 -> None
+    - Options: spuntare *Generate a loader*
+    - Infine cliccare **Generate**
+3. Estrarre le cartelle nel seguente percorso, ovviamente creare la cartella apposita: 
+    - C:\OpenGL\  
+4. Per **Glad** estrarre le cartelle *include* e *src* dentro a una cartella chiamata **glad**
+5. Inserire il file *glfw3.dll* nella stessa directory in cui viene buildato il programma *(.exe)*
+
+L'albero delle cartelle dovrebbe assomigliare a questo
+```
+C:.
+├───glad
+│   ├───include
+│   │   ├───glad
+│   │   └───KHR
+│   └───src
+└───glfw-3.4.bin.WIN64
+    ├───docs
+    │   └───html
+    │       └───search
+    ├───include
+    │   └───GLFW
+    ├───lib-mingw-w64
+    ├───lib-static-ucrt
+    ├───lib-vc2013
+    ├───lib-vc2015
+    ├───lib-vc2017
+    ├───lib-vc2019
+    └───lib-vc2022
+```
+
+### How to install OpenGL (WINDOWS ONLY)
+
+Here you'll find the steps to install OpenGL and Glad.
+
+1. Download the [GLFW](https://www.glfw.org/download.html) library by clicking **64-bit Windows binaries**
+2. Download [Glad](https://glad.dav1d.de/). In the site select the following parameters
+    - Language: C/C++
+    - Specification: OpenGL
+    - Profile: Core
+    - API: 
+        1. gl -> 3.3
+        2. gles1 -> None
+        3. gles2 -> None
+        4. gles3 -> None
+    - Options: tick *Generate a loader*
+    - Finally click on **Generate**
+3. Extract the folders at the following location, obviously create the dedicated folder: 
+    - C:\OpenGL\  
+4. For **Glad** extract the *include* and *src* folders inside a newly created folder named **glad**
+5. Copy the *glfw3.dll* file in the same directory that contains the built program *(.exe)*
+
+
+The directory tree should look like this:
+```
+C:.
+├───glad
+│   ├───include
+│   │   ├───glad
+│   │   └───KHR
+│   └───src
+└───glfw-3.4.bin.WIN64
+    ├───docs
+    │   └───html
+    │       └───search
+    ├───include
+    │   └───GLFW
+    ├───lib-mingw-w64
+    ├───lib-static-ucrt
+    ├───lib-vc2013
+    ├───lib-vc2015
+    ├───lib-vc2017
+    ├───lib-vc2019
+    └───lib-vc2022
+```
+
+
+**The team**
+Alessandro Landi @RehTrizZ
+Ivan Casotti @Cyb3s
+Alessandro Enzo Gori @AleBitCode
+Joseph Portera @0hM1C1uf1
