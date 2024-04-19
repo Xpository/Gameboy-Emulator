@@ -213,8 +213,11 @@ LR35902::LR35902(std::string filepath)
 }
 
 void LR35902::fetch_ins(){
-	thisContext.currentOpcode=cart->ReadCart(thisContext.registers.PC++);
-	thisContext.currentInstruction=instruction_by_opcode(thisContext.currentOpcode);
+	//viene preso il program counter dell'isttruzione corrente e aumentato
+	thisContext.currentOpcode=mem->Read(thisContext.registers.PC++); 
+
+	//una volta preso l'opcode nella riga precedente questo viene passato nel  context per ottenere l'istruzione corrispondente
+	thisContext.currentInstruction=instruction_by_opcode(thisContext.currentOpcode); 
 };
 
 
