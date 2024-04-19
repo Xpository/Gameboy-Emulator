@@ -1,13 +1,19 @@
-#include "types.hpp"
+#include <GLFW/glfw3.h>
+#include <iostream>
+#include <types.hpp>
 
-
-class PPU{
+class Graphics{
     public:
-        PPU();
+        Graphics(int, int, const char*);
+        ~Graphics();
+        void init();
+        bool shouldClose();
+        void startFrame();
+        void endFrame();
+        void drawSprite(int, int, Byte*, int, int);
+        void setPixel(int, int, Byte, Byte, Byte);
     private:
-        Byte screen[160][144];
-
-        // 1024 Byte
-        
-
+        GLFWwindow* window;
+        GLuint textureID;
+        void setupTextures();
 };

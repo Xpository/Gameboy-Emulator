@@ -20,6 +20,7 @@ mono_crash.*
 # Build results
 [Dd]ebug/
 .vscode/
+SFML/
 [Dd]ebugPublic/
 [Rr]elease/
 [Rr]eleases/
@@ -74,6 +75,7 @@ ScaffoldingReadMe.txt
 StyleCopReport.xml
 
 # Files built by Visual Studio
+*.gch
 *_i.c
 *_p.c
 *_h.h
