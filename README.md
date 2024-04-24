@@ -48,7 +48,7 @@ di un primo emulatore, quello per Gameboy™
 
 Project created to be uploaded on the **Unica Istruzione** web site,
 as part of the *capolavoro* school project. The base idead of the 
-project is a program that lets you downloand and emulate games
+project is a program that lets you download and emulate games
 from different retro consoles for free.
 
 For now all resources are used to learn and develop the first emulator
