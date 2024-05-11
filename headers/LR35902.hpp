@@ -85,6 +85,7 @@ class LR35902 {
 		void UpdateFlag(char, bool);
 		
 		Byte GetRegister(char);
+
         Word GetDoubleRegister(std::string rx);
         bool GetFlag(char);
 
@@ -94,6 +95,7 @@ class LR35902 {
 			//fetching
 			Word fetchedData;
 			Word memoryDestination;
+			bool memoryDestination_is_mem;
 			Byte currentOpcode;
 			instruction *currentInstruction;
 
@@ -101,7 +103,7 @@ class LR35902 {
 			bool stepping;
 		};
 
-		CPU_Context thisContext;
+		CPU_Context thisContext={0};
 
 		bool CPU_Step();
 		void fetch_ins();

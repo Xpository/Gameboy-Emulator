@@ -205,7 +205,6 @@ LR35902::LR35902(std::string filepath)
 	fl.NF = false;
 	fl.HF = false;
 
-	thisContext = {0};
 
 	// Very cool pointer shit :)
 	cart = new Cartridge(filepath);
@@ -222,6 +221,16 @@ void LR35902::fetch_ins(){
 
 
 void LR35902::fetch_data(){
+	thisContext.memoryDestination=0;
+	thisContext.memoryDestination_is_mem=false;
+
+	switch(thisContext.currentInstruction->indi){
+		case AM_IMP:
+			return;
+		case AM_R:
+			thisContext.fetchedData=GetRegister(thisContext.currentInstruction->reg1);
+			return;
+	}
 
 }
 
