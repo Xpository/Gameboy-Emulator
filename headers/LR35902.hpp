@@ -85,9 +85,10 @@ class LR35902 {
 		void UpdateFlag(char, bool);
 		
 		Byte GetRegister(char);
-
         Word GetDoubleRegister(std::string rx);
-        bool GetFlag(char);
+
+		
+		bool GetFlag(char);
 
 		struct CPU_Context{
 			CPU_Registers registers;

@@ -1,5 +1,5 @@
 #include "../headers/opcodes.hpp"
-#include "opcodes.hpp"
+
 
 /////////////////////////////////////////////////////
 // 				Logica degli opcodes               //
@@ -557,20 +557,59 @@ std::map<Byte, instruction> instructionsMap = {
 
 instruction* instruction_by_opcode(Byte opcode){
    // if(istruzioni[opcode].type==IN_NOP)  --> if di test
-
    //    return NULL;
 
     return &instructionsMap[opcode];
 }
-char GetRegisterByName(registri input, )
+
+std::string GetRegisterByName(registri input)
 {
     switch (input)
     {
     case RT_A:
-        return 'A';
+        return "A";
         break;
-    
-    default:
+    case RT_F:
+        return "F";
         break;
+    case RT_B:
+        return "B";
+        break;
+    case RT_C:
+        return "C";
+        break;
+    case RT_D:
+        return "D";
+        break;
+    case RT_E:
+        return "E";
+        break;
+    case RT_H:
+        return "H";
+        break;
+    case RT_L:
+        return "L";
+        break;
+    case RT_AF:
+        return "AF";
+        break;
+    case RT_BC:
+        return "BC";
+        break;
+    case RT_DE:
+        return "DE";
+        break;
+    case RT_HL:
+        return "HL";
+        break;   
+    case RT_SP:
+        return "SP";
+        break;    
+    case RT_PC:
+        return "PC";
+        break;      
     }
+
+    return "";
 }
+

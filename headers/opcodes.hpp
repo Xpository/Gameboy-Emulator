@@ -123,10 +123,11 @@ struct instruction
 	Byte parametri;  // variabile utilizzata da pochissime istruzioni ma necessaria 
 };
 
-char GetRegisterByName(registri);
 
-instruction* instruction_by_opcode(Byte opcode); //ritorna l'indirizzo dell'opcode
+instruction* instruction_by_opcode(Byte); //ritorna l'indirizzo dell'opcode
 
+
+std::string GetRegisterByName(registri);
 
 
 												

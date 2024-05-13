@@ -213,16 +213,27 @@ LR35902::LR35902(std::string filepath)
 
 void LR35902::fetch_ins(){
 	//viene preso il program counter dell'isttruzione corrente e aumentato
-	thisContext.currentOpcode=mem->Read(thisContext.registers.PC++); 
+	thisContext.currentOpcode = mem->Read(thisContext.registers.PC++); 
 
 	//una volta preso l'opcode nella riga precedente questo viene passato nel  context per ottenere l'istruzione corrispondente
-	thisContext.currentInstruction=instruction_by_opcode(thisContext.currentOpcode); 
+	thisContext.currentInstruction = instruction_by_opcode(thisContext.currentOpcode); 
 };
 
 
+//  ------------------------ Casotti leggi qua ------------------------
+//	Allora per fixare quello che abbiamo detto in classe ho fatto una funzione dentro "opcodes.cpp"
+//  di nome "GetRegisterByName" te ci metti come parametro l'enum registri e ritorna una stringa 
+//  poi cosa fai... fa un controllo sulla lunghezza, se e' di 0 e' un errore e ritorni "RunTimeError_RegisterNotFound"
+//  Se e' di 1 allora chiami la funzione GetRegister, ora ATTENTO perche la funzione prende come parametro un char
+// 	Potresti fare 2 cose
+//  - Modifichi la funzione e cambi il parametro a stringa, e a quel punto dovrai cambiare lo switch con if, perche allo switch
+//    non vanno bene le stringhe (da errore)
+//  - Casti il risultato da string a char (molto piu veloce) pero non so se funziona.
+//  Infine se la lunghezza e' pari a due, molto piu semplice chiami "GetDoubleRegister" che ritorna una Word.
+
 void LR35902::fetch_data(){
-	thisContext.memoryDestination=0;
-	thisContext.memoryDestination_is_mem=false;
+	thisContext.memoryDestination = 0;
+	thisContext.memoryDestination_is_mem = false;
 
 	switch(thisContext.currentInstruction->indi){
 		case AM_IMP:
