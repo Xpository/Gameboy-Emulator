@@ -52,7 +52,8 @@ void Memory::Write(Word address, Byte data)
 		if (bankingMode){
 			ramBank = data & 0x03;
 		}else {
-			// Implementa dopo
+			  int highBits = data & 0x03; 
+     romBank = (romBank & 0x1F) | (highBits << 5); 
 		}
 	}else if(address >= 0x6000 && address <= 0x7FFF){
 		bankingMode = (data & 0x01) != 0;
