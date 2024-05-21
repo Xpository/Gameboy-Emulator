@@ -39,7 +39,7 @@ Byte Memory::Read(Word address)
 	return 0xFF;
 }
 
-//Cagotti russo di merda
+//Cagotti russo amorevole 
 void Memory::Write(Word address, Byte data)
 {
 	if(address <= 0x1FFF){
