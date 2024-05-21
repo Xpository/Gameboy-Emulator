@@ -5,7 +5,7 @@
 #include "bus.hpp"
 #include <string>
 
-// casotti stai lavorando, bravo russazzo ciuccia cazzo 
+// casotti stai lavorando, bravo russazzo <3 
 
 
 
