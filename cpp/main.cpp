@@ -19,45 +19,31 @@
 
 int main()
 {
-	std::string fp = "roms/Tetris.gb";
-	LR35902 CPU(fp);
 
-	Graphics graphics;
+    Byte romData[32768]; // Simula una ROM di 32KB
+    for (int i = 0; i < 32768; i++) {
+        romData[i] = rand() % 0xFF + 1; // Inizializza con dati fittizi
+    }
+    Memory memory(romData, 32768);
 
-    // Crea un array di dati per lo schermo (160x144)
-    // Qui creiamo un pattern semplice per testare il rendering
-    Byte testScreenData[160][144];
+    // Crea un'istanza di Graphics
+    Graphics graphics(memory);
 
-    // Riempie il testScreenData con un pattern
+    // Simula il riempimento della screenMatrix con valori in scala di grigi
     for (int y = 0; y < 144; ++y) {
         for (int x = 0; x < 160; ++x) {
-            if ((x / 10) % 2 == (y / 10) % 2) {
-                testScreenData[x][y] = 0xFF; // Bianco
-            } else {
-                testScreenData[x][y] = 0x00; // Nero
-            }
+            graphics.updateMatrix(x + y, x, y); // Riempie con un gradiente
         }
     }
 
-    // Copia i dati nel screenMatrix del Graphics
-    memcpy(graphics.screenMatrix, testScreenData, sizeof(testScreenData));
-
-    // Carica e compila i shaders
-    // graphics.vertexShader = graphics.loadShaderSource("shaders/shader.vert");
-    // graphics.fragmentShader = graphics.loadShaderSource("shaders/shader.frag");
-
-    // Loop di rendering
+    // Ciclo di rendering
     while (!glfwWindowShouldClose(graphics.window)) {
-        // Renderizza l'immagine dallo screenMatrix
         graphics.RenderImageFromScreenMatrix();
-
-        // Scambia i buffer e processa gli eventi
-        glfwSwapBuffers(graphics.window);
         glfwPollEvents();
     }
 
     // Termina GLFW
     glfwTerminate();
-
     return 0;
+
 }

@@ -29,6 +29,18 @@ class Memory{
 
         std::array<Byte, 127> HIGH_RAM;
 
+        Byte LCDC; // LCD Control
+        Byte STAT; // LCDC Status
+        Byte SCY;  // Scroll Y
+        Byte SCX;  // Scroll X
+        Byte LY;   // LCDC Y-Coordinate
+        Byte LYC;  // LY Compare
+        Byte DMA;  // DMA Transfer
+        Byte BGP;  // BG Palette Data
+        Byte OBP0; // Object Palette 0 Data
+        Byte OBP1; // Object Palette 1 Data
+        Byte WY;   // Window Y Position
+        Byte WX;   // Window X Position
 
         bool ramEnabled;
 
@@ -42,6 +54,8 @@ class Memory{
         
         Byte Read(Word);
         void Write(Word, Byte);
+        void OAMDMA();
+        Byte* RequestPointerTo(std::string);
 
         
         

@@ -9,11 +9,20 @@ class Graphics{
     private:
         void initGraphics();
         Byte* toArrayScreenMatrix();
+        Byte* pLY;
+
+
+        int modeClock;
+        int mode;
     public:
-        Graphics();
+        Graphics(Memory);
+        void update(int);
+        void renderCurrentScanline();
+        void requestInterrupt(int);
 
 
         void RenderImageFromScreenMatrix();
+        void updateMatrix(Byte, Byte, Byte);
         std::string loadShaderSource(const char*);
 
         GLFWwindow* window;
@@ -22,4 +31,6 @@ class Graphics{
         std::string fragmentShader;
 
         Byte screenMatrix[160][144];
+
+
 };
