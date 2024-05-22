@@ -83,14 +83,19 @@ Memory::Memory(Byte* datas, unsigned int size)
     WY = 0x00;
     WX = 0x00;
 	
-	for(int i = 0; i < size; i++){
-		cartridgeROM[i] = datas[i];
-	}
+	cartridgeROM = new Byte[size];
+	// Letteralmente cosa piu unsafe del mondo... spero vivamente che non crei errori
+	memcpy(cartridgeROM, datas, size);
+	
 
 	ramEnabled = false;
 	romBank = 1;
 	ramBank = 0;
 	bankingMode = false;
+}
+
+Memory::~Memory(){
+	delete[] cartridgeROM;
 }
 
 Byte Memory::Read(Word address)

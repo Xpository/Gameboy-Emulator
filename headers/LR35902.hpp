@@ -7,14 +7,6 @@
 // casotti stai lavorando, bravo russazzo <3 
 
 
-
-
-
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////
-
 class LR35902 {
 	private:
 		/*
@@ -69,24 +61,64 @@ class LR35902 {
 		struct CPU_Registers reg;
 		struct Flags fl;
 		
-		Cartridge* cart = nullptr;
-		Memory* mem = nullptr;
-
+		/* ExtractUpper estrae la parte superiore di una Word
+		*  @param Word word da cui estrarre il valore
+		*  @return Il valore della parte superiore della word
+		*/ 
 		Byte ExtractUpper(Word);
+		
+		/* ExtractUpper estrae la parte inferiore di una word
+		*  @param Word word da cui estrarre il valore
+		*  @return Il valore della parte inferiore della word
+		*/ 
 		Byte ExtractLower(Word);
 		
+		Cartridge* cart = nullptr;
+		Memory* mem = nullptr;
 	public:
-		LR35902(std::string);
 
+		/* Costruttore della classe con 2 argomenti, inizializza il tutto
+		* @param Stringa Il percorso alla ROM da avviare
+		* @param Memory L'istanza di memory che si utilizza nel main
+		*/
+		LR35902(std::string, Memory&);
 
+		/* UpdateRegister modifica il valore di un registro
+		*  @param Data Byte da inserire
+		*  @param Registro il registro in maiuscolo
+		*/ 
 		void UpdateRegister(Byte, char); // si updateta una parte del registro (basso o alto)
+		
+		/* UpdateRegister modifica il valore di una coppia di registri
+		*  @param Data word da inserire
+		*  @param Registro coppia di registri in maiuscolo
+		*/ 
 		void UpdateRegister(Word, std::string); // si updateta l'intero registro (sia basso che alto)
+		
+		/* UpdateFlag modifica il valore di una flag
+		*  @param Flag da modificare
+		*  @param Stato stato in cui modificarlo, inizialmente true
+		*/ 
 		void UpdateFlag(char, bool);
 		
+		/* GetRegister ritorna il valore di un dato registro
+		*  @param Registro registro da cui prendere il dato
+		*  @return Valore del registro
+		*/ 
 		Byte GetRegister(char);
+
+		/* GetDoubleRegister ritorna una word con i registri RX
+		* @param RX una stringa composta da 2 caratteri che simboleggiano il registro
+		* @return La Word che creata da parte alta + parte bassa del registro
+		* @attention Non ci sono controlli sulla lunghezza della stringa,
+		* quindi potrebbe ritornare 0x0000, cioe' indefinito o not-found 
+		*/
         Word GetDoubleRegister(std::string rx);
 
-		
+		/* GetFlag ritorna il valore di un dato flag
+		*  @param Flag flag da cui prendere lo stato
+		*  @return Il valore della flag
+		*/ 
 		bool GetFlag(char);
 
 		struct CPU_Context{
