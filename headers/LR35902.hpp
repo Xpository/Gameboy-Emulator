@@ -2,7 +2,6 @@
 #include "cartridge.hpp"
 #include "opcodes.hpp"
 #include "memory.hpp"
-#include "bus.hpp"
 #include <string>
 
 // casotti stai lavorando, bravo russazzo ciuccia cazzo 

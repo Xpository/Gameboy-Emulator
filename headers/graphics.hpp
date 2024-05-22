@@ -8,14 +8,18 @@
 class Graphics{
     private:
         void initGraphics();
+        Byte* toArrayScreenMatrix();
     public:
         Graphics();
 
-        void RenderImageFromArray(Byte*);
+
+        void RenderImageFromScreenMatrix();
         std::string loadShaderSource(const char*);
 
         GLFWwindow* window;
 
         std::string vertexShader;
         std::string fragmentShader;
+
+        Byte screenMatrix[160][144];
 };

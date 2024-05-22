@@ -82,7 +82,7 @@ void Graphics::initGraphics()
     // 160x144 = La grandezza dello schermo del Gameboy
     glViewport(0, 0, 160, 144);
 
-	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+	// glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	
 
 }
@@ -106,18 +106,107 @@ Graphics::Graphics(){
     fragmentShader = loadShaderSource("shaders/shader.frag");
     vertexShader = loadShaderSource("shaders/shader.vert");
     
+    for (int i = 0; i < 160; i++){
+        for(int j = 0; j < 144; j++){
+            screenMatrix[i][j] = 0x00;
+        }
+    }
+    
 }
 
 
-void Graphics::RenderImageFromArray(Byte * gameboyScreenData)
-{
+
+Byte* Graphics::toArrayScreenMatrix() {
+    Byte* screenArray = new Byte[160 * 144 * 3]; 
+
+    int aI = 0;
+    for (int y = 0; y < 144; ++y) {
+        for (int x = 0; x < 160; ++x) {
+            Byte grayValue = screenMatrix[x][y];
+            screenArray[aI++] = grayValue; // R
+            screenArray[aI++] = grayValue; // G
+            screenArray[aI++] = grayValue; // B
+        }
+    }
+
+    return screenArray;
+}
+void Graphics::RenderImageFromScreenMatrix() {
+    Byte* arrayiedMatrix = toArrayScreenMatrix();
+
     GLuint textureID;
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 160, 144, 0, GL_RGB, GL_UNSIGNED_BYTE, gameboyScreenData);
-
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 160, 144, 0, GL_RGB, GL_UNSIGNED_BYTE, arrayiedMatrix);
+    
     GLuint shaderProgram = LoadShaders(fragmentShader, vertexShader);
+    glUseProgram(shaderProgram);
+
+    // Definisci i vertici del quadrato e le coordinate della texture
+    float vertices[] = {
+        // Posizioni    // Coordinate della texture
+        -1.0f,  1.0f,  0.0f, 1.0f, // Top-Left
+        -1.0f, -1.0f,  0.0f, 0.0f, // Bottom-Left
+         1.0f, -1.0f,  1.0f, 0.0f, // Bottom-Right
+         1.0f,  1.0f,  1.0f, 1.0f  // Top-Right
+    };
+
+    unsigned int indices[] = {
+        0, 1, 2, // Primo triangolo
+        0, 2, 3  // Secondo triangolo
+    };
+
+    GLuint VAO, VBO, EBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
+
+    glBindVertexArray(VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+    // Posizioni
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // Coordinate della texture
+    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+    glEnableVertexAttribArray(1);
+
+    glBindTexture(GL_TEXTURE_2D, textureID);
+
+    // Ciclo di rendering
+    while (!glfwWindowShouldClose(window)) {
+        // Render
+        glClear(GL_COLOR_BUFFER_BIT);
+
+        // Usa il programma shader
+        glUseProgram(shaderProgram);
+
+        // Bind texture
+        glBindTexture(GL_TEXTURE_2D, textureID);
+
+        // Renderizza il quadrato
+        glBindVertexArray(VAO);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        // Scambia i buffer
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+
+    // Cleanup
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
+    glDeleteTextures(1, &textureID);
+
+    delete[] arrayiedMatrix; // Libera la memoria allocata per l'array
 }

@@ -66,7 +66,7 @@ void Memory::Write(Word address, Byte data)
 		WRAM[address - 0xC000] = data;
 	}else if(address >= 0xFE00 && address <= 0xFE9F){
 		OAM[address - 0xFE00] = data;
-	}else if(address >= 0xFF80 && address >= 0xFFFE){
+	}else if(address >= 0xFF80 && address <= 0xFFFE){
 		HIGH_RAM[address - 0xFF80] = data;
 	}else if(address >= 0xFF00 && address <= 0xFF7F){
 		IO[address - 0xFF00] = data;
