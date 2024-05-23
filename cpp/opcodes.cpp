@@ -302,7 +302,8 @@ std::string GetRegisterByName(registri input)
         break;    
     case RT_PC:
         return "PC";
-        break;      
+        break;   
+    
     }
 
     return "";

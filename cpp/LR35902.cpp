@@ -196,6 +196,10 @@ void LR35902::fetch_ins(){
 
 	//una volta preso l'opcode nella riga precedente questo viene passato nel  context per ottenere l'istruzione corrispondente
 	thisContext.currentInstruction = instruction_by_opcode(thisContext.currentOpcode); 
+
+	if(thisContext.currentInstruction == NULL){
+		std::cerr<<"Unknown Instruction", thisContext.currentInstruction ;
+	}
 };
 
 
@@ -219,6 +223,30 @@ void LR35902::fetch_data(){
 			return;
 		case AM_R:
 			thisContext.fetchedData=GetRegister(thisContext.currentInstruction->reg1);
+			return;
+		case AM_R_D8:
+			thisContext.fetchedData=mem->Read(thisContext.registers.PC);
+			emu_cycles(1);
+			thisContext.registers.PC++;
+			return;
+		case AM_D16: {
+			Word lo = mem->Read(thisContext.registers.PC);
+			emu_cycles(1);
+
+			Word hi =  mem->Read(thisContext.registers.PC+1);
+			emu_cycles(1);
+
+			thisContext.fetchedData= lo|(hi<<8);
+
+			thisContext.registers.PC +=2;
+
+			return;
+
+		}
+
+		default:
+			std::cerr<<"Unknown addressing mode error (it's all fucked up)",thisContext.currentInstruction->indi;
+			exit(-7);
 			return;
 	}
 
