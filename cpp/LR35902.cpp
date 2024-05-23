@@ -11,10 +11,7 @@
 
 
 
-/* UpdateRegister modifica il valore di un registro
-*  @param dato byte da inserire
-*  @param registro in maiuscolo
-*/ 
+
 void LR35902::UpdateRegister(Byte data, char r1)
 {
 	switch (r1) {
@@ -47,10 +44,7 @@ void LR35902::UpdateRegister(Byte data, char r1)
 
 
 
-/* UpdateFlag modifica il valore di una flag
-*  @param flag da modificare
-*  @param stato in cui modificarlo, inizalmente true
-*/ 
+
 void LR35902::UpdateFlag(char f, bool state = true)
 {
 	switch (f) {
@@ -72,10 +66,7 @@ void LR35902::UpdateFlag(char f, bool state = true)
 	}
 }
 
-/* UpdateRegister modifica il valore di un registro
-*  @param dato word da inserire
-*  @param registro in maiuscolo
-*/ 
+
 void LR35902::UpdateRegister(Word data, std::string rx)
 {
 	if (rx == "BC") {
@@ -92,10 +83,7 @@ void LR35902::UpdateRegister(Word data, std::string rx)
 	}
 }
 
-/* GetRegister ritorna il valore di un dato registro
-*  @param registro da cui prendere il dato
-*  @return valore del registro
-*/ 
+
 Byte LR35902::GetRegister(char c)
 {
 	switch (c)
@@ -120,10 +108,7 @@ Byte LR35902::GetRegister(char c)
 	return 0x00;
 }
 
-/* GetDoubleRegister ritorna una word con i registri RX
- * @param 2 caratteri che simboleggiano il registro
- * @return La word data dalla somma di parte alta + parte bassa (0x0000)
-*/
+
 Word LR35902::GetDoubleRegister(std::string rx){
 	if (rx == "BC") {
 		Word highByte = (reg.B << 8);
@@ -141,10 +126,7 @@ Word LR35902::GetDoubleRegister(std::string rx){
 }
 
 
-/* GetFlag ritorna il valore di un dato flag
-*  @param flag da cui prendere il dato
-*  @return valore del flag
-*/ 
+
 bool LR35902::GetFlag(char c)
 {
 	switch (c)
@@ -163,27 +145,21 @@ bool LR35902::GetFlag(char c)
 	return false;
 }
 
-/* ExtractUpper estrae la parte superiore di una word
-*  @param word da cui estrarre il valore
-*  @return valore superiore
-*/ 
+
 Byte LR35902::ExtractUpper(Word data)
 {
 	Byte highByte = (data >> 8) & 0xFF; // Estrai il byte più significativo
 	return highByte;
 }
 
-/* ExtractUpper estrae la parte inferiore di una word
-*  @param word da cui estrarre il valore
-*  @return valore inferiore
-*/ 
+
 Byte LR35902::ExtractLower(Word data)
 {
 	Byte lowByte = data & 0xFF; // Estrai il byte meno significativo
 	return lowByte;
 }
 
-LR35902::LR35902(std::string filepath)
+LR35902::LR35902(std::string filepath, Memory& memory)
 {
 	reg.A = 0x01;
 
@@ -209,9 +185,9 @@ LR35902::LR35902(std::string filepath)
 	thisContext.IF = 0xFF0F;
 	thisContext.IME = 0x01;
 
-	// Very cool pointer shit :)
-	cart = new Cartridge(filepath);
-	mem = new Memory(cart->GetData(), cart->GetRomSize());
+	// Very cool pointer shenanigans :)
+	mem = &memory;
+	
 }
 
 void LR35902::fetch_ins(){

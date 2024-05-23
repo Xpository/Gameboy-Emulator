@@ -63,7 +63,7 @@ void Graphics::initGraphics()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	
-	window = glfwCreateWindow(800, 600, "LearnOpenGL", NULL, NULL);
+	window = glfwCreateWindow(800, 600, "Gameboy Emulator", NULL, NULL);
 
     if (window == NULL)
 	{
@@ -71,6 +71,7 @@ void Graphics::initGraphics()
 		glfwTerminate();
 		return;
 	}
+    
 	glfwMakeContextCurrent(window);
 
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))

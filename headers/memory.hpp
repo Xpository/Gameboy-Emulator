@@ -15,7 +15,7 @@ class Memory{
         // [2] da 0x4000 a 0x7FFF e' ROM bank commutabile | Contiene dati che variano
         // 
         // Data la grandezza della ROM il tutto sara mappato nel corso del programma.
-        std::array<Byte, 8 * 1024 * 1024> cartridgeROM;
+        Byte* cartridgeROM;
 
         std::array<Byte, 32 * 1024> RAM;
         
@@ -51,6 +51,7 @@ class Memory{
         
     public:
         Memory(Byte*, unsigned int);
+        ~Memory();
         
         Byte Read(Word);
         void Write(Word, Byte);
