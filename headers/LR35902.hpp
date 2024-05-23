@@ -99,6 +99,11 @@ class LR35902 {
 			Byte currentOpcode;
 			instruction *currentInstruction;
 
+			//condizioni di utilizzo degli interrupt
+			Word IE;			//interrupt enable (abilitazione dei tipi specifici di interrupt)
+			Word IF;	//interrupt flag (interrupt in sospeso)
+			Byte IME;		//interrupt master enable (abilitazione generica)
+
 			bool halt;
 			bool stepping;
 		};

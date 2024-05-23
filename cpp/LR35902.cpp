@@ -205,6 +205,9 @@ LR35902::LR35902(std::string filepath)
 	fl.NF = false;
 	fl.HF = false;
 
+	thisContext.IE = 0xFFFF;
+	thisContext.IF = 0xFF0F;
+	thisContext.IME = 0x01;
 
 	// Very cool pointer shit :)
 	cart = new Cartridge(filepath);
@@ -247,6 +250,75 @@ void LR35902::fetch_data(){
 
 void LR35902::execute(){
 
+	//esecuzione istruzioni
+
+	if(thisContext.IME && (Memory.RAM[thisContext.IF] & Memory.RAM[thisContext.IE]){
+		handleInterrupt();
+	}
+}
+
+enum InterruptType {
+    VBLANK = 0,
+    LCD_STAT = 1,
+    TIMER = 2,
+    SERIAL = 3,
+    JOYPAD = 4
+};
+
+void handleInterrupt(){
+	for (int i = 0; i < 5; ++i) {
+		Byte interruptFlag = 1 << i;
+
+		if ((Memory.RAM[thisContext.IF] & interruptFlag) && (Memory.RAM[thisContext.IE] & interruptFlag)) {
+			pushStack(reg.PC >> 8);
+			pushStack(reg.PC & 0xFF);
+
+			IntMasterEnable=false;
+
+			Memory.RAM[thisContext.IF] &= ~interruptFlag;
+
+			//punta alle istruzioni della ISR
+			switch (i) {
+				case VBLANK:
+					reg.PC = 0x0040;
+					break;
+				case LCD_STAT:
+					reg.PC = 0x0048;
+					break;
+				case TIMER:
+					reg.PC = 0x0050;
+					break;
+				case SERIAL:
+					reg.PC = 0x0058;
+					break;
+				case JOYPAD:
+					reg.PC = 0x0060;
+					break;
+			}
+		}
+	}
+}
+
+void requestInterrupt(InterruptType type) {
+	Memory.RAM[thisContext.IF] |= (1 << type);
+}
+
+void pushStack(Byte value) {
+	Memory.RAM[reg.SP--] = value;
+}
+
+Byte popStack() {
+	return Memory.RAM[++reg.SP];
+}
+
+void returnFromInterrupt() {
+	// Ripristina lo stato del processore
+	Byte low = popStack();
+	Byte high = popStack();
+	PC = (high << 8) | low;
+
+	// Riabilita gli interrupt
+	IME = 1;
 }
 
 bool LR35902::CPU_Step(){
