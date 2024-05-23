@@ -16,25 +16,25 @@ void LR35902::UpdateRegister(Byte data, char r1)
 {
 	switch (r1) {
 	case 'A':
-		reg.A = data;
+		thisContext.registers.A = data;
 		break;
 	case 'B':
-		reg.B = data;
+		thisContext.registers.B = data;
 		break;
 	case 'C':
-		reg.C = data;
+		thisContext.registers.C = data;
 		break;
 	case 'D':
-		reg.D = data;
+		thisContext.registers.D = data;
 		break;
 	case 'E':
-		reg.E = data;
+		thisContext.registers.E = data;
 		break;
 	case 'H':
-		reg.H = data;
+		thisContext.registers.H = data;
 		break;
 	case 'L':
-		reg.L = data;
+		thisContext.registers.L = data;
 		break;
 	default:
 		std::cerr << "RunTimeError_FlagNotFound";
@@ -70,16 +70,16 @@ void LR35902::UpdateFlag(char f, bool state = true)
 void LR35902::UpdateRegister(Word data, std::string rx)
 {
 	if (rx == "BC") {
-		reg.B = ExtractUpper(data);
-		reg.C = ExtractLower(data);
+		thisContext.registers.B = ExtractUpper(data);
+		thisContext.registers.C = ExtractLower(data);
 	}
 	else if (rx == "DE") {
-		reg.D = ExtractUpper(data);
-		reg.E = ExtractLower(data);
+		thisContext.registers.D = ExtractUpper(data);
+		thisContext.registers.E = ExtractLower(data);
 	}
 	else if (rx == "HL") {
-		reg.H = ExtractUpper(data);
-		reg.L = ExtractLower(data);
+		thisContext.registers.H = ExtractUpper(data);
+		thisContext.registers.L = ExtractLower(data);
 	}
 }
 
@@ -89,19 +89,19 @@ Byte LR35902::GetRegister(char c)
 	switch (c)
 	{
 	case 'A':
-		return reg.A;
+		return thisContext.registers.A;
 	case 'B':
-		return reg.B;
+		return thisContext.registers.B;
 	case 'C':
-		return reg.C;
+		return thisContext.registers.C;
 	case 'D':
-		return reg.D;
+		return thisContext.registers.D;
 	case 'E':
-		return reg.E;
+		return thisContext.registers.E;
 	case 'H':
-		return reg.H;
+		return thisContext.registers.H;
 	case 'L':
-		return reg.L;									
+		return thisContext.registers.L;									
 	default:
 		std::cerr << "RunTimeError_RegisterNotFound\n";
 	}
@@ -111,16 +111,16 @@ Byte LR35902::GetRegister(char c)
 
 Word LR35902::GetDoubleRegister(std::string rx){
 	if (rx == "BC") {
-		Word highByte = (reg.B << 8);
-		return highByte + reg.C;
+		Word highByte = (thisContext.registers.B << 8);
+		return highByte + thisContext.registers.C;
 	}
 	else if (rx == "DE") {
-		Word highByte = (reg.D << 8);
-		return highByte + reg.E;
+		Word highByte = (thisContext.registers.D << 8);
+		return highByte + thisContext.registers.E;
 	}
 	else if (rx == "HL") {
-		Word highByte = (reg.H << 8);
-		return highByte + reg.L;
+		Word highByte = (thisContext.registers.H << 8);
+		return highByte + thisContext.registers.L;
 	}
    return 0x0000;
 }
@@ -161,19 +161,19 @@ Byte LR35902::ExtractLower(Word data)
 
 LR35902::LR35902(std::string filepath, Memory& memory)
 {
-	reg.A = 0x01;
+	thisContext.registers.A = 0x01;
 
-	reg.B = 0xFF;
-	reg.C = 0x13;
+	thisContext.registers.B = 0xFF;
+	thisContext.registers.C = 0x13;
 
-	reg.D = 0x00;
-	reg.E = 0xC1;
+	thisContext.registers.D = 0x00;
+	thisContext.registers.E = 0xC1;
 
-	reg.H = 0x84;
-	reg.L = 0x03;
+	thisContext.registers.H = 0x84;
+	thisContext.registers.L = 0x03;
 
-	reg.SP = 0xFFFE;
-	reg.PC = 0x0100;
+	thisContext.registers.SP = 0xFFFE;
+	thisContext.registers.PC = 0x0100;
 
 	fl.ZF = false;
 	fl.CF = false;
@@ -238,8 +238,8 @@ void LR35902::handleInterrupt(){
 		Byte interruptFlag = 1 << i;
 
 		if ((mem->Read(thisContext.IF) & interruptFlag) && (mem->Read(thisContext.IE) & interruptFlag)) {
-			pushStack(reg.PC >> 8);
-			pushStack(reg.PC & 0xFF);
+			pushStack(thisContext.registers.PC >> 8);
+			pushStack(thisContext.registers.PC & 0xFF);
 
 			thisContext.IME=false;
 
@@ -250,19 +250,19 @@ void LR35902::handleInterrupt(){
 			//punta alle istruzioni della ISR
 			switch (i) {
 				case VBLANK:
-					reg.PC = 0x0040;
+					thisContext.registers.PC = 0x0040;
 					break;
 				case LCD_STAT:
-					reg.PC = 0x0048;
+					thisContext.registers.PC = 0x0048;
 					break;
 				case TIMER:
-					reg.PC = 0x0050;
+					thisContext.registers.PC = 0x0050;
 					break;
 				case SERIAL:
-					reg.PC = 0x0058;
+					thisContext.registers.PC = 0x0058;
 					break;
 				case JOYPAD:
-					reg.PC = 0x0060;
+					thisContext.registers.PC = 0x0060;
 					break;
 			}
 			break;
@@ -277,18 +277,18 @@ void LR35902::requestInterrupt(InterruptType type) {
 }
 
 void LR35902::pushStack(Byte value) {
-	mem->Write(reg.SP--, value);
+	mem->Write(thisContext.registers.SP--, value);
 }
 
 Byte LR35902::popStack() {
-	return mem->Read(++reg.SP);
+	return mem->Read(++thisContext.registers.SP);
 }
 
 void LR35902::returnFromInterrupt() {
 	// Ripristina lo stato del processore
 	Byte low = popStack();
 	Byte high = popStack();
-	reg.PC = (high << 8) | low;
+	thisContext.registers.PC = (high << 8) | low;
 
 	// Riabilita gli interrupt
 	thisContext.IME = 1;
