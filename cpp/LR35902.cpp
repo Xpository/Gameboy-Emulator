@@ -228,30 +228,24 @@ void LR35902::execute(){
 
 	//esecuzione istruzioni
 
-	if(thisContext.IME && (Memory.RAM[thisContext.IF] & Memory.RAM[thisContext.IE]){
+	if(thisContext.IME && (mem->Read(thisContext.IF) & mem->Read(thisContext.IE))){
 		handleInterrupt();
 	}
 }
 
-enum InterruptType {
-    VBLANK = 0,
-    LCD_STAT = 1,
-    TIMER = 2,
-    SERIAL = 3,
-    JOYPAD = 4
-};
-
-void handleInterrupt(){
+void LR35902::handleInterrupt(){
 	for (int i = 0; i < 5; ++i) {
 		Byte interruptFlag = 1 << i;
 
-		if ((Memory.RAM[thisContext.IF] & interruptFlag) && (Memory.RAM[thisContext.IE] & interruptFlag)) {
+		if ((mem->Read(thisContext.IF) & interruptFlag) && (mem->Read(thisContext.IE) & interruptFlag)) {
 			pushStack(reg.PC >> 8);
 			pushStack(reg.PC & 0xFF);
 
-			IntMasterEnable=false;
+			thisContext.IME=false;
 
-			Memory.RAM[thisContext.IF] &= ~interruptFlag;
+			Byte intF = mem->Read(thisContext.IF);
+			intF &= ~interruptFlag;
+			mem->Write(thisContext.IF, intF);
 
 			//punta alle istruzioni della ISR
 			switch (i) {
@@ -271,30 +265,33 @@ void handleInterrupt(){
 					reg.PC = 0x0060;
 					break;
 			}
+			break;
 		}
 	}
 }
 
-void requestInterrupt(InterruptType type) {
-	Memory.RAM[thisContext.IF] |= (1 << type);
+void LR35902::requestInterrupt(InterruptType type) {
+	Byte intF = mem->Read(thisContext.IF);
+	intF |= (1 << type);
+	mem->Write(thisContext.IF, intF);
 }
 
-void pushStack(Byte value) {
-	Memory.RAM[reg.SP--] = value;
+void LR35902::pushStack(Byte value) {
+	mem->Write(reg.SP--, value);
 }
 
-Byte popStack() {
-	return Memory.RAM[++reg.SP];
+Byte LR35902::popStack() {
+	return mem->Read(++reg.SP);
 }
 
-void returnFromInterrupt() {
+void LR35902::returnFromInterrupt() {
 	// Ripristina lo stato del processore
 	Byte low = popStack();
 	Byte high = popStack();
-	PC = (high << 8) | low;
+	reg.PC = (high << 8) | low;
 
 	// Riabilita gli interrupt
-	IME = 1;
+	thisContext.IME = 1;
 }
 
 bool LR35902::CPU_Step(){

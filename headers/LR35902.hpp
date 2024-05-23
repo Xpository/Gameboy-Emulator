@@ -142,6 +142,20 @@ class LR35902 {
 
 		CPU_Context thisContext={0};
 
+		enum InterruptType {
+			VBLANK = 0,
+			LCD_STAT = 1,
+			TIMER = 2,
+			SERIAL = 3,
+			JOYPAD = 4
+		};
+
+		void handleInterrupt();
+		void requestInterrupt(InterruptType type);
+		void pushStack(Byte value);
+		Byte popStack();
+		void returnFromInterrupt();
+
 		bool CPU_Step();
 		void fetch_ins();
 		void fetch_data();
