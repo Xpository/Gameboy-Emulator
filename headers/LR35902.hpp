@@ -58,7 +58,6 @@ class LR35902 {
 
 		
 
-		struct CPU_Registers reg;
 		struct Flags fl;
 		
 		/* ExtractUpper estrae la parte superiore di una Word
