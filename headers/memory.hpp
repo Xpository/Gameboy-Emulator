@@ -52,7 +52,7 @@ class Memory{
         void Write(Word, Byte);
 
         void OAMDMA();
-        void Memory::UpdateSTAT(int);
+        void UpdateSTAT(int);
 
         Byte* RequestPointerTo(std::string);
         Byte RequestValueOfRegister(std::string);
