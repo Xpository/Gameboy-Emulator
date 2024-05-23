@@ -33,18 +33,14 @@ std::string getPathFromInput(){
 int main()
 {
     std::string fp = getPathFromInput();
+    system("cls");
+
     Cartridge* cart = new Cartridge(fp);
     Memory memory(cart->GetData(), cart->GetRamSize());
     cart->~Cartridge();
+    
     LR35902 cpu(fp, memory);
-
     Graphics graphics(memory);
-
-    for (int y = 0; y < 144; ++y) {
-        for (int x = 0; x < 160; ++x) {
-            graphics.updateMatrix(x + y, x, y); 
-        }
-    }
 
     const int cyclesPerFrame = 70224; // Cicli di clock per frame (4194304 Hz / 60 FPS)
     int cyclesExecuted = 0;
@@ -52,14 +48,12 @@ int main()
     while (!glfwWindowShouldClose(graphics.window)) {
         while (cyclesExecuted < cyclesPerFrame) {
             cyclesExecuted += cpu.CPU_Step();
+            graphics.Update(cyclesExecuted);
         }
 
-        graphics.RenderImageFromScreenMatrix();
-
+        graphics.RenderPixels();
         glfwPollEvents();
-
         cyclesExecuted = 0;
-
         glfwSwapBuffers(graphics.window);
     }
 

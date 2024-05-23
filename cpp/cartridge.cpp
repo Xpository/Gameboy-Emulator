@@ -3,10 +3,16 @@
 
 
 
-
-
- 
+/* @brief Costruttore che carica temporaneamente in memoria la cartridge
+ * 
+ * Il costruttore prima apre il file passatogli come argomento e ne controlla la grandezza.
+ * Instanzia poi un buffer temporaneo per andare poi a leggere la dimensione effettiva della ROM
+ * Con questo dato verra inizializzato "data" che conterrà la ROM, infine elimina il buffer
+ * 
+ * @param filepath Stringa contenente il percorso relativo alla rom da aprire
+*/
 Cartridge::Cartridge(std::string filepath) : data(nullptr) {
+    // Apri il file
     std::ifstream file(filepath, std::ios::binary);
     if (!file) {
         std::cout << "File not found\n";
@@ -18,40 +24,43 @@ Cartridge::Cartridge(std::string filepath) : data(nullptr) {
     std::streamsize size = file.tellg();
     file.seekg(0, std::ios::beg); // Ritorna all'inizio del file
 
-    // Alloca memoria temporanea per leggere il file
+    // Alloca memoria per leggere il file
     Byte* tempBuffer = new Byte[size];
 
-    // Leggi il file nel buffer temporaneo
+    // Controllo sulla lettura corretta del file
     if (!file.read(reinterpret_cast<char*>(tempBuffer), size)) {
         std::cerr << "Errore durante la lettura del file.\n";
         delete[] tempBuffer;
         return;
     }
     
-    // A questo punto, puoi determinare la dimensione effettiva della ROM
-    // Assumendo che GetRomSize() possa ora operare correttamente sul buffer temporaneo
+    // A questo punto, si determina la dimensione effettiva della ROM
+    // Utilizzando una versione apposita di GetRomSize()
+    // che prende come parametro un puntatore ad un array 
     unsigned int effectiveSize = GetRomSize(tempBuffer);
 
-    // Alloca memoria basata sulla dimensione effettiva della ROM
+    // Alloca memoria basandosi sulla dimensione effettiva della ROM
     data = new Byte[effectiveSize];
 
-    // Copia i dati necessari nel buffer definitivo `data`
+    // Copia i dati 
     unsigned int bytesToCopy = std::min(static_cast<std::streamsize>(effectiveSize), size);
     for(unsigned int i = 0; i < bytesToCopy; i++) {
         data[i] = tempBuffer[i];
     }
 
-    // Pulisci la memoria temporanea
+    // Pulisci 
     delete[] tempBuffer;
     file.close();
 }
 
+/* @brief Distruttore che elimina tutti i dati allocati nell'heap
+*/
 Cartridge::~Cartridge() {
-    delete[] data; // Distruttore per pulire la memoria
+    delete[] data; 
 }
 
-/* CheckLogo controlla i Byte 0x0104 a 0x0133 per vedere se corrisponde
- * @return ritorna true se corrisponde, false altrimenti 
+/* @brief CheckLogo() confronta i Byte da 0x0104 a 0x0133 con l'esadecimale originale del logo Nintendo
+ * @return Ritorna True se corrisponde al logo, False altrimenti 
 */ 
 bool Cartridge::CheckLogo(){
     Byte logo[48] = {
@@ -67,8 +76,9 @@ bool Cartridge::CheckLogo(){
     }
     return true;
 }
-/* GetTitle ritorna il titolo che si trova tra 0x0134 e 0x0143
- * @return ritorna il titolo in uppercase
+
+/* @brief GetTitle() ritorna il titolo del gioco che si trova da 0x0134 a 0x0143
+ * @return Ritorna una stringa contenente il titolo in uppercase
 */ 
 std::string Cartridge::GetTitle(){
     std::string title = "";
@@ -80,8 +90,8 @@ std::string Cartridge::GetTitle(){
     return title;
 }
 
-/* CheckCGBFlag controlla il byte a 0x0143 e ritorna se il CGB e' attivo o no
- * @return ritorna la presenza del CGB, true = attivo, false = disattivato
+/* CheckCGBFlag() controlla il byte a 0x0143 e ritorna se il CGB (Gameboy a colori) e' attivo o no
+ * @return Ritorna la presenza del CGB, true = attivo, false = disattivato
 */ 
 bool Cartridge::CheckCGBFlag()
 {
@@ -93,8 +103,8 @@ bool Cartridge::CheckCGBFlag()
 }
 
 
-/* GetNewLicenseeCode ritorna il codice licensa a 0x0145
- * @return ritorna la stringa con il nome della casa produttrice del gioco
+/* @brief GetNewLicenseeCode() ritorna il codice licensa presente all'indirizzo 0x0145
+ * @return Ritorna una stringa corrispondendte al Byte nella cella di memoria all'indirizzo 0x0145
 */ 
 std::string Cartridge::GetNewLicenseeCode()
 {
@@ -167,8 +177,8 @@ std::string Cartridge::GetNewLicenseeCode()
 }
 
 
-/* GetCartridgeType ritorna il tipo della cartridge
- * @return ritorna la stringa con il tipo della cartridge
+/* @brief GetCartridgeType() ritorna il tipo della cartridge
+ * @return Ritorna la stringa contenente il tipo della cartridge
 */
 std::string Cartridge::GetCartridgeType()
 {
@@ -207,8 +217,10 @@ std::string Cartridge::GetCartridgeType()
 }
 
 
-/* !!!!! FUNZIONE UTILIZZATA NEL COSTRUCTOR NON USARE DA ALTRE PARTI !!!!!
- * GetRomSize ritorna la ROM size
+/* @attention FUNZIONE UTILIZZATA NEL COSTRUCTOR NON USARE DA ALTRE PARTI 
+ * @brief GetRomSize() ritorna la grandezza della ROM, dato un puntatore
+ *
+ * @param Un puntatore ad un array temporaneo
  * @return ritorna un insigned int con la grandezza della ROM in base all'indirizzo di 0x0148
 */
 unsigned int Cartridge::GetRomSize(Byte *dt)
@@ -216,7 +228,7 @@ unsigned int Cartridge::GetRomSize(Byte *dt)
     return 32 * 1024 * (1 << dt[0x148]);
 }
 
-/* GetRomSize ritorna la ROM size
+/* @brief GetRomSize() ritorna la grandezza della ROM
  * @return ritorna un insigned int con la grandezza della ROM in base all'indirizzo di 0x0148
 */
 unsigned int Cartridge::GetRomSize()
@@ -225,8 +237,8 @@ unsigned int Cartridge::GetRomSize()
 }
 
 
-/* GetNewLicenseeCode ritorna la RAM size
- * @return ritorna un insigned int con la grandezza della ROM in base all'indirizzo di 0x0148
+/* GetNewLicenseeCode ritorna la grandezza della RAM 
+ * @return ritorna un insigned int con la grandezza della RAM in base all'indirizzo di 0x0149
 */
 unsigned int Cartridge::GetRamSize()
 {
@@ -242,8 +254,8 @@ unsigned int Cartridge::GetRamSize()
     return ramSizes[data[0x0149]];
 }
 
-/* GetOldLicenseeCode ritorna il vecchio Licensee code
- * @return ritorna il vecchio Licensee code. Se e' 0x33 usa il NewLicenseeCode
+/* @brief GetOldLicenseeCode() ritorna il vecchio Licensee code
+ * @return ritorna il vecchio Licensee code. Se l'esadecimale a 0x14B e' 0x33 ritornerà il NewLicenseeCode
 */
 std::string Cartridge::GetOldLicenseeCode()
 {
@@ -266,7 +278,7 @@ std::string Cartridge::GetOldLicenseeCode()
         {0x28, "Kotobuki Systems"},
         {0x29, "Seta"},
         {0x30, "Infogrames"},
-        {0x31, "Nintendo"},
+        {0x31, "Nintendo"},                 // Due Nintendo? 
         {0x32, "Bandai"},
         {0x33, "Indicates that the New licensee code should be used instead."},
         {0x34, "Konami"},
@@ -319,12 +331,12 @@ std::string Cartridge::GetOldLicenseeCode()
         {0x8B, "Bullet-Proof Software"},
         {0x8C, "Vic Tokai"},
         {0x8E, "Ape"},
-        {0x8F, "I’Max"},
+        {0x8F, "I’Max"},                    // Possibile warning in questo codice di licensa... giuro che gli ammazzo questi produttori
         {0x91, "Chunsoft Co."},
         {0x92, "Video System"},
         {0x93, "Tsubaraya Productions Co."},
         {0x95, "Varie Corporation"},
-        {0x96, "Yonezawa/S’Pal"},
+        {0x96, "Yonezawa/S’Pal"},           // Idem qua...
         {0x97, "Kaneko"},
         {0x99, "Arc"},
         {0x9A, "Nihon Bussan"},
@@ -402,14 +414,14 @@ std::string Cartridge::GetOldLicenseeCode()
     else
         return licenseeCodes[data[0x014B]];
 }
-
+/* @brief ComputeChecksum() il checksum controlla i byte da 0x0134 a 0x014C.
+ *  Se il risultato non corrisponde al valore in 0x014D l'esecuzione e' terminata
+ *  
+ *  @return Booleano contente il risultato del checksum
+*/
 bool Cartridge::ComputeChecksum()
 {
-    //
-    // Questo checksum controlla i byte da 0x0134 a 0x014C
-    // Se il risultato non corrisponde al valore in 0x014D
-    // L'esecuzione e' terminata
-    //
+    
     Byte checksum = 0;
     for (Word address = 0x0134; address <= 0x014C; address++) {
         checksum = checksum - data[address] - 1;
@@ -419,8 +431,10 @@ bool Cartridge::ComputeChecksum()
 }
 
 
-/* ReadCart ritorna un valore, dato l'indirizzo come parametro
-* @return ritorna un Byte presente all'indirizzo "address"
+/* @brief ReadCart() ritorna un valore, dato l'indirizzo come parametro
+ * @return ritorna un Byte presente all'indirizzo "address"
+ * 
+ * @deprecated Non si userà piu dato che la cartridge viene caricata in memoria
 */
 Byte Cartridge::ReadCart(Word address) 
 {   
@@ -428,7 +442,7 @@ Byte Cartridge::ReadCart(Word address)
     return data[address];
 }
 
-/* ReadFromCart ritorna un array con i valori da inizio a fine
+/* @brief ReadFromCart() ritorna un array con i valori da inizio a fine
  * @return ritorna un puntatore ad un array di (endAddress - startAddress) + 1 Byte,
  *         contenente i dati da startAddress a endAddress.
 */         
@@ -448,11 +462,21 @@ Byte* Cartridge::ReadFromToCart(Word startAddress, Word endAddress)
     return dataArray;
 }
 
+/* @brief GetData() ritorna un puntatore all'array data
+ * @return ritorna un puntatore all'array contenente la cartridge
+ * 
+ * @deprecated Non utilizzato ma mi dispiace cancellarlo lol
+*/      
 Byte *Cartridge::GetData()
 {
     return data;
 }
 
+/* @brief ValidateCartridge() controllo totale che ritorna un booleano in base
+ * alla veridicità della cartridge
+ *
+ * @return True se la cartridge è legittima, False altrimenti
+*/ 
 bool Cartridge::ValidateCartridge()
 {
     // Controllo del logo

@@ -115,7 +115,7 @@ Graphics::Graphics(Memory mem){
     
     mode = 2; // Inizia con la OAM Search mode
     modeClock = 0;
-
+    this->mem = &mem;
     pLY = mem.RequestPointerTo("LY");
 }
 
@@ -124,150 +124,83 @@ void Graphics::updateMatrix(Byte tileData, Byte x, Byte y)
     screenMatrix[y][x] = tileData; 
 }
 
-void Graphics::RenderImageFromScreenMatrix() {
-    GLuint shaderProgram = LoadShaders(fragmentShader, vertexShader);
-    glUseProgram(shaderProgram);
+void Graphics::RenderPixels() {
+    Byte ly = mem->RequestValueOfRegister("LY");
+    bool use8x16 = (mem->RequestValueOfRegister("LCDC") & 0x04) != 0;
 
-    // Definisci i vertici del quadrato e le coordinate della texture per l'intera schermata
-    float vertices[] = {
-        // Posizioni    // Coordinate della texture
-        -1.0f,  1.0f,  0.0f, 1.0f, // Top-Left
-        -1.0f, -1.0f,  0.0f, 0.0f, // Bottom-Left
-         1.0f, -1.0f,  1.0f, 0.0f, // Bottom-Right
-         1.0f,  1.0f,  1.0f, 1.0f  // Top-Right
-    };
+    for (int i = 0; i < 40; i++) {
+        Byte spriteY = mem->OAM[i * 4] - 16;
+        Byte spriteX = mem->OAM[i * 4 + 1] - 8;
+        Byte tileIndex = mem->OAM[i * 4 + 2];
+        Byte attributes = mem->OAM[i * 4 + 3];
 
-    unsigned int indices[] = {
-        0, 1, 2, // Primo triangolo
-        0, 2, 3  // Secondo triangolo
-    };
+        bool flipY = (attributes & 0x40) != 0;
+        bool flipX = (attributes & 0x20) != 0;
 
-    GLuint VAO, VBO, EBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
+        int spriteHeight = use8x16 ? 16 : 8;
+        if (ly >= spriteY && ly < (spriteY + spriteHeight)) {
+            int line = ly - spriteY;
+            if (flipY) {
+                line = spriteHeight - line - 1;
+            }
 
-    glBindVertexArray(VAO);
+            Byte tileLow = mem->Read(0x8000 + tileIndex * 16 + line * 2);
+            Byte tileHigh = mem->Read(0x8000 + tileIndex * 16 + line * 2 + 1);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // Posizioni
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // Coordinate della texture
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    // Ciclo di rendering
-    while (!glfwWindowShouldClose(window)) {
-        // Render
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        // Usa il programma shader
-        glUseProgram(shaderProgram);
-
-        // Renderizza ogni scanline
-        for (int i = 0; i < 144; ++i) {
-            *pLY = i;  // Imposta LY alla linea corrente
-            renderCurrentScanline();  // Renderizza la linea corrente
+            for (int x = 0; x < 8; x++) {
+                int colorBit = flipX ? x : 7 - x;
+                int color = ((tileHigh >> colorBit) & 1) << 1 | ((tileLow >> colorBit) & 1);
+                if (color != 0) {
+                    int pixelX = spriteX + x;
+                    if (pixelX >= 0 && pixelX < 160) {
+                        screenMatrix[ly][pixelX] = color;
+                    }
+                }
+            }
         }
-
-        // Scambia i buffer
-        glfwSwapBuffers(window);
-        glfwPollEvents();
     }
-
-    // Cleanup
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
 }
 
 
 void Graphics::renderCurrentScanline() {
-    Byte* scanlineArray = new Byte[160 * 3]; 
+    Byte scx = mem->RequestValueOfRegister("SCX");
+    Byte scy = mem->RequestValueOfRegister("SCY");
+    Byte ly = mem->RequestValueOfRegister("LY");
 
-    int y = *pLY;  
-    int aI = 0;
-    for (int x = 0; x < 160; ++x) {
-        Byte grayValue = screenMatrix[x][y];
-        scanlineArray[aI++] = grayValue; // R
-        scanlineArray[aI++] = grayValue; // G
-        scanlineArray[aI++] = grayValue; // B
+    for (int x = 0; x < 160; x++) {
+        // Calcola le coordinate dello sfondo
+        int bgX = (scx + x) & 0xFF;
+        int bgY = (scy + ly) & 0xFF;
+        // Calcola l'indice della tile nella tile map
+        int tileIndex = (bgY / 8) * 32 + (bgX / 8);
+        // Calcola l'indirizzo della tile data
+        int tileAddress = mem->Read(0x9800 + tileIndex) * 16 + (bgY % 8) * 2;
+        // Leggi i byte della tile data
+        Byte tileLow = mem->Read(tileAddress);
+        Byte tileHigh = mem->Read(tileAddress + 1);
+        // Calcola il colore del pixel
+        int colorBit = 7 - (bgX % 8);
+        int color = ((tileHigh >> colorBit) & 1) << 1 | ((tileLow >> colorBit) & 1);
+        // Setta il pixel nel buffer dello schermo
+        screenMatrix[ly][x] = color;
     }
 
-    GLuint textureID;
-    glGenTextures(1, &textureID);
-    glBindTexture(GL_TEXTURE_2D, textureID);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    RenderPixels();
 
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 160, 1, 0, GL_RGB, GL_UNSIGNED_BYTE, scanlineArray);
 
-    GLuint shaderProgram = LoadShaders(fragmentShader, vertexShader);
-    glUseProgram(shaderProgram);
-
-    // Definisci i vertici del quadrato e le coordinate della texture per una singola scanline
-    float vertices[] = {
-        // Posizioni    // Coordinate della texture
-        -1.0f,  1.0f - 2.0f * y / 144.0f,  0.0f, 1.0f, // Top-Left
-        -1.0f,  1.0f - 2.0f * (y + 1) / 144.0f,  0.0f, 0.0f, // Bottom-Left
-         1.0f,  1.0f - 2.0f * (y + 1) / 144.0f,  1.0f, 0.0f, // Bottom-Right
-         1.0f,  1.0f - 2.0f * y / 144.0f,  1.0f, 1.0f  // Top-Right
-    };
-
-    unsigned int indices[] = {
-        0, 1, 2, // Primo triangolo
-        0, 2, 3  // Secondo triangolo
-    };
-
-    GLuint VAO, VBO, EBO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-    glGenBuffers(1, &EBO);
-
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-    // Posizioni
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // Coordinate della texture
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    glBindTexture(GL_TEXTURE_2D, textureID);
-
-    // Renderizza la scanline
-    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-    // Cleanup
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
-    glDeleteTextures(1, &textureID);
-
-    delete[] scanlineArray; // Libera la memoria allocata per l'array
 }
+
+
 
 void Graphics::requestInterrupt(int interruptType){
     // Non so se serva Gori please cock
 }
 
-void Graphics::update(int cycles)
+void Graphics::Update(int cycles)
 {
     modeClock += cycles;
+
+    mem->UpdateSTAT(modeClock);
 
     switch (mode)
     {

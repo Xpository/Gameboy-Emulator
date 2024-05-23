@@ -8,20 +8,20 @@
 class Graphics{
     private:
         void initGraphics();
-        Byte* toArrayScreenMatrix();
         Byte* pLY;
 
 
         int modeClock;
         int mode;
+        Memory* mem;
     public:
         Graphics(Memory);
-        void update(int);
+        void Update(int);
         void renderCurrentScanline();
         void requestInterrupt(int);
 
 
-        void RenderImageFromScreenMatrix();
+        void RenderPixels();
         void updateMatrix(Byte, Byte, Byte);
         std::string loadShaderSource(const char*);
 

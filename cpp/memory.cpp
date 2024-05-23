@@ -220,6 +220,32 @@ void Memory::Write(Word address, Byte data)
 
 }
 
+void Memory::UpdateSTAT(int modeClock){
+    Byte currentMode = STAT & 0x03;
+    Byte newMode = currentMode;
+
+    if (LY >= 144) {
+        newMode = 1; // V-Blank
+    } else {
+        int modeClockPosition = modeClock % 456;
+        if (modeClockPosition < 80) {
+            newMode = 2; // OAM search
+        } else if (modeClockPosition < 252) {
+            newMode = 3; // Pixel transfer
+        } else {
+            newMode = 0; // H-Blank
+        }
+    }
+
+    STAT = (STAT & 0xFC) | newMode;
+
+    // Aggiorna il flag di coincidenza LY == LYC
+    if (LY == LYC) {
+        STAT |= 0x04;
+    } else {
+        STAT &= 0xFB;
+    }}
+
 void Memory::OAMDMA() {
     for(int i = 0; i < 0xA0; i++) {
         OAM[i] = Read((DMA << 8) + i);
@@ -253,6 +279,35 @@ Byte* Memory::RequestPointerTo(std::string reg){
 		return &WX;		
 	}
 	return nullptr;
+}
+
+Byte Memory::RequestValueOfRegister(std::string reg){
+	if(reg == "LCDC"){
+		return LCDC;
+	}else if(reg == "STAT"){
+		return STAT;		
+	}else if(reg == "SCY"){
+		return SCY;
+	}else if(reg == "SCX"){
+		return SCX;		
+	}else if(reg == "LY"){
+		return LY;		
+	}else if(reg == "LYC"){
+		return LYC;		
+	}else if(reg == "DMA"){
+		return DMA;		
+	}else if(reg == "BGP"){
+		return BGP;		
+	}else if(reg == "OBP0"){
+		return OBP0;		
+	}else if(reg == "OBP1"){
+		return OBP1;		
+	}else if(reg == "WY"){
+		return WY;	
+	}else if(reg == "WX"){
+		return WX;		
+	}
+	return 0x00;
 }
 
 //
