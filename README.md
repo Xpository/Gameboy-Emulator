@@ -68,10 +68,9 @@ e' il meglio che possiamo fare per ora.
 
 **ENGLISH** 🇺🇸
 
-Because of the many problems regarding launch.json and task.json
-here are the *args* we used while developing.
-Even if its primitive and not so scalable way of doing it, its the best
-we have for the time being.
+Due to many issues we encountered regarding launch.json and task.json, 
+we provide you with the args used by us.  
+It is an early-stage of development as it is the best we can do for now.
 
 #### **LAUNCH.JSON**
 ```
