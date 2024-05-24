@@ -1,5 +1,6 @@
 #include "../headers/LR35902.hpp"
 #include <iostream>
+#include <emu.hpp>
 
 
 
@@ -255,6 +256,7 @@ void LR35902::fetch_data(){
 void LR35902::execute(){
 
 	//esecuzione istruzioni
+	std::cout<<"Executing Instruction:\nPC: \t", thisContext.currentInstruction;
 
 	if(thisContext.IME && (mem->Read(thisContext.IF) & mem->Read(thisContext.IE))){
 		handleInterrupt();
@@ -323,6 +325,7 @@ void LR35902::returnFromInterrupt() {
 }
 
 bool LR35902::CPU_Step(){
+
 	if(!thisContext.halt){
 		fetch_ins();
 		fetch_data();

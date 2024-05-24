@@ -250,7 +250,7 @@ std::map<Byte, instruction> instructionsMap = {
     {0xFF, {IN_RST, AM_IMP, RT_NONE, RT_NONE, CT_NONE, 0x00}},
 };
 
-instruction* instruction_by_opcode(Byte opcode){
+instruction* instruction_by_opcode( Byte opcode){
    // if(istruzioni[opcode].type==IN_NOP)  --> if di test
    //    return NULL;
 
