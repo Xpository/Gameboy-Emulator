@@ -86,13 +86,7 @@ class LR35902 {
 		*  @param Data Byte da inserire
 		*  @param Registro il registro in maiuscolo
 		*/ 
-		void UpdateRegister(Byte, char); // si updateta una parte del registro (basso o alto)
-		
-		/* UpdateRegister modifica il valore di una coppia di registri
-		*  @param Data word da inserire
-		*  @param Registro coppia di registri in maiuscolo
-		*/ 
-		void UpdateRegister(Word, std::string); // si updateta l'intero registro (sia basso che alto)
+		void UpdateRegister(registri,Word); // si updateta una parte del registro (basso o alto)
 		
 		/* UpdateFlag modifica il valore di una flag
 		*  @param Flag da modificare
@@ -104,7 +98,7 @@ class LR35902 {
 		*  @param Registro registro da cui prendere il dato
 		*  @return Valore del registro
 		*/ 
-		Byte GetRegister(char);
+		Word GetRegister(registri);
 
 		/* GetDoubleRegister ritorna una word con i registri RX
 		* @param RX una stringa composta da 2 caratteri che simboleggiano il registro
@@ -149,11 +143,14 @@ class LR35902 {
 			JOYPAD = 4
 		};
 
+		void cpu_init();
+
 		void handleInterrupt();
 		void requestInterrupt(InterruptType type);
 		void pushStack(Byte value);
 		Byte popStack();
 		void returnFromInterrupt();
+
 
 		bool CPU_Step();
 		void fetch_ins();
