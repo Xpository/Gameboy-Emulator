@@ -1,11 +1,11 @@
+#ifndef EMU_HPP
+#define EMU_HPP
 // in this file we are gonna include the functions for the emulator context which it 
 // will be overrunnig the other components, so it works even if the others don't
-#pragma once
 
 #include "types.hpp"
 
-//underneath code must be implemented
-
+// underneath code must be implemented
 struct emu
 {
     bool pause;
@@ -13,7 +13,9 @@ struct emu
     B64 ticks;
 };
 
-emu thisEmuContext;
 void emu_cycles(int cpu_cycles);
 
 
+// Ma quanto sei british 
+
+#endif

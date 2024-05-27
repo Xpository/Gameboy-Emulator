@@ -1,6 +1,6 @@
 #include "../headers/LR35902.hpp"
+#include "../headers/emu.hpp"
 #include <iostream>
-#include <emu.hpp>
 
 
 

@@ -7,6 +7,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
+
+
 GLuint LoadShaders(std::string fragmentShaderSource, std::string vertexShaderSource){
     // Rendiamoli stringhe in C perchè sta schifo di libreria è in C...
     const char* vertexAsChar = vertexShaderSource.c_str();
@@ -124,41 +126,17 @@ void Graphics::updateMatrix(Byte tileData, Byte x, Byte y)
     screenMatrix[y][x] = tileData; 
 }
 
-void Graphics::RenderPixels() {
-    Byte ly = mem->RequestValueOfRegister("LY");
-    bool use8x16 = (mem->RequestValueOfRegister("LCDC") & 0x04) != 0;
-
-    for (int i = 0; i < 40; i++) {
-        Byte spriteY = mem->OAM[i * 4] - 16;
-        Byte spriteX = mem->OAM[i * 4 + 1] - 8;
-        Byte tileIndex = mem->OAM[i * 4 + 2];
-        Byte attributes = mem->OAM[i * 4 + 3];
-
-        bool flipY = (attributes & 0x40) != 0;
-        bool flipX = (attributes & 0x20) != 0;
-
-        int spriteHeight = use8x16 ? 16 : 8;
-        if (ly >= spriteY && ly < (spriteY + spriteHeight)) {
-            int line = ly - spriteY;
-            if (flipY) {
-                line = spriteHeight - line - 1;
-            }
-
-            Byte tileLow = mem->Read(0x8000 + tileIndex * 16 + line * 2);
-            Byte tileHigh = mem->Read(0x8000 + tileIndex * 16 + line * 2 + 1);
-
-            for (int x = 0; x < 8; x++) {
-                int colorBit = flipX ? x : 7 - x;
-                int color = ((tileHigh >> colorBit) & 1) << 1 | ((tileLow >> colorBit) & 1);
-                if (color != 0) {
-                    int pixelX = spriteX + x;
-                    if (pixelX >= 0 && pixelX < 160) {
-                        screenMatrix[ly][pixelX] = color;
-                    }
-                }
-            }
-        }
-    }
+void Graphics::RenderScreen() {
+    GLuint shaderProgram = LoadShaders("shaders/shader.frag", "shaders/shader.vert");
+    
+    glClear(GL_COLOR_BUFFER_BIT);
+    glUseProgram(shaderProgram);
+    // Da implementare passaggio da matrice ad array 
+    // glBindTexture(GL_TEXTURE_2D, texture);
+    // glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, 160, 144, 0, GL_RED, GL_UNSIGNED_BYTE, screenMatrix);
+    // Da implementare il VAO
+    // glBindVertexArray(VAO);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }
 
 
@@ -168,24 +146,11 @@ void Graphics::renderCurrentScanline() {
     Byte ly = mem->RequestValueOfRegister("LY");
 
     for (int x = 0; x < 160; x++) {
-        // Calcola le coordinate dello sfondo
-        int bgX = (scx + x) & 0xFF;
-        int bgY = (scy + ly) & 0xFF;
-        // Calcola l'indice della tile nella tile map
-        int tileIndex = (bgY / 8) * 32 + (bgX / 8);
-        // Calcola l'indirizzo della tile data
-        int tileAddress = mem->Read(0x9800 + tileIndex) * 16 + (bgY % 8) * 2;
-        // Leggi i byte della tile data
-        Byte tileLow = mem->Read(tileAddress);
-        Byte tileHigh = mem->Read(tileAddress + 1);
-        // Calcola il colore del pixel
-        int colorBit = 7 - (bgX % 8);
-        int color = ((tileHigh >> colorBit) & 1) << 1 | ((tileLow >> colorBit) & 1);
-        // Setta il pixel nel buffer dello schermo
+    Byte color = (x % 2 == 0) ? 0xFF : 0x00;
         screenMatrix[ly][x] = color;
     }
 
-    RenderPixels();
+    RenderScreen();
 
 
 }
@@ -193,7 +158,7 @@ void Graphics::renderCurrentScanline() {
 
 
 void Graphics::requestInterrupt(int interruptType){
-    // Non so se serva Gori please cock
+    // Non so se serva Gori please cook
 }
 
 void Graphics::Update(int cycles)

@@ -10,7 +10,7 @@
 class LR35902 {
 	private:
 		/*
-			Registri sono:
+			Registri principali sono:
 				A,B,C,D,E,H,L General Purpose
 				Flag, sostituiscono AL, parte bassa del primo registro AF
 				SP, Stack Pointer
@@ -18,6 +18,7 @@ class LR35902 {
 		*/
 		struct CPU_Registers{
 			Byte A; // high
+			// Il low di A sarebbero i flag
 
 			Byte B; // high
 			Byte C; // low
@@ -60,13 +61,13 @@ class LR35902 {
 
 		struct Flags fl;
 		
-		/* ExtractUpper estrae la parte superiore di una Word
+		/* ExtractUpper() estrae la parte superiore di una Word
 		*  @param Word word da cui estrarre il valore
 		*  @return Il valore della parte superiore della word
 		*/ 
 		Byte ExtractUpper(Word);
 		
-		/* ExtractUpper estrae la parte inferiore di una word
+		/* ExtractUpper() estrae la parte inferiore di una word
 		*  @param Word word da cui estrarre il valore
 		*  @return Il valore della parte inferiore della word
 		*/ 
@@ -82,33 +83,34 @@ class LR35902 {
 		*/
 		LR35902(std::string, Memory&);
 
-		/* UpdateRegister modifica il valore di un registro
-		*  @param Data Byte da inserire
+		/* UpdateRegister() modifica il valore di un registro
+		*  @param Data enum registri da inserire
 		*  @param Registro il registro in maiuscolo
 		*/ 
-		void UpdateRegister(registri,Word); // si updateta una parte del registro (basso o alto)
+		void UpdateRegister(registri, Word); // si updateta una parte del registro (basso o alto)
 		
-		/* UpdateFlag modifica il valore di una flag
+		/* UpdateFlag() modifica il valore di una flag
 		*  @param Flag da modificare
 		*  @param Stato stato in cui modificarlo, inizialmente true
 		*/ 
 		void UpdateFlag(char, bool);
 		
-		/* GetRegister ritorna il valore di un dato registro
+		/* GetRegister() ritorna il valore di un dato registro
 		*  @param Registro registro da cui prendere il dato
 		*  @return Valore del registro
 		*/ 
 		Word GetRegister(registri);
 
-		/* GetDoubleRegister ritorna una word con i registri RX
+		/* GetDoubleRegister() ritorna una word con i registri RX
 		* @param RX una stringa composta da 2 caratteri che simboleggiano il registro
 		* @return La Word che creata da parte alta + parte bassa del registro
 		* @attention Non ci sono controlli sulla lunghezza della stringa,
 		* quindi potrebbe ritornare 0x0000, cioe' indefinito o not-found 
+		* @deprecated Andrebbe modificata e resa un enum dato che la string è inefficiente
 		*/
         Word GetDoubleRegister(std::string rx);
 
-		/* GetFlag ritorna il valore di un dato flag
+		/* GetFlag() ritorna il valore di un dato flag
 		*  @param Flag flag da cui prendere lo stato
 		*  @return Il valore della flag
 		*/ 
@@ -143,6 +145,7 @@ class LR35902 {
 			JOYPAD = 4
 		};
 
+		// Niente documentazione perche work in progress
 		void cpu_init();
 
 		void handleInterrupt();
