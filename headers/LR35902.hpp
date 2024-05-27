@@ -129,7 +129,7 @@ class LR35902 {
 			bool memoryDestination_is_mem;
 			Byte currentOpcode;
 			instruction *currentInstruction;
-
+			
 			//condizioni di utilizzo degli interrupt
 			Word IE;			//interrupt enable (abilitazione dei tipi specifici di interrupt)
 			Word IF;	//interrupt flag (interrupt in sospeso)
