@@ -66,8 +66,6 @@
 */
 
 
-// Costruttore inizializza la classe
-// @param ROM puntatore della ROM
 Memory::Memory(Byte* datas, unsigned int size) 
 {
 	LCDC = 0x91; // Valore di default
@@ -140,7 +138,6 @@ Byte Memory::Read(Word address)
 	return 0xFF;
 }
 
-//Cagotti russo amorevole 
 void Memory::Write(Word address, Byte data)
 {
 	if(address <= 0x1FFF){
