@@ -123,10 +123,23 @@ struct instruction
 	Byte parametri;  // variabile utilizzata da pochissime istruzioni ma necessaria 
 };
 
+/* @brief ritorna un puntatore all'istruzione
+ * 
+ * accede alla mappa delle istruzioni ritornando un puntatore all'elemento che
+ * corrisponde all'istruzione con l'opcode inserito
+ *
+ * @param opcode dell'istruzione richiesta
+ * @return puntatore all'istruzione nella InstructionMap
+*/
+instruction* instruction_by_opcode(Byte);
 
-instruction* instruction_by_opcode(Byte); //ritorna l'indirizzo dell'opcode
-
-
+/* @brief ritorna una stringa con il nome del registro richiesto
+ * 
+ * determina il registro richiesto e ne ritorna il nome in formato stringa
+ *
+ * @param enum che rappresenta i registri
+ * @return stringa con il nome in uppercase del registro
+*/
 std::string GetRegisterByName(registri);
 
 
