@@ -51,6 +51,7 @@ int main()
     LR35902 cpu(fp, memory);
     Graphics graphics(memory);
 
+
    
 
     while (!glfwWindowShouldClose(graphics.window)) {
