@@ -85,6 +85,7 @@ Memory::Memory(Byte* datas, unsigned int size)
 	
 	cartridgeROM = new Byte[size];
 	// Letteralmente cosa piu unsafe del mondo... spero vivamente che non crei errori
+	
 	memcpy(cartridgeROM, datas, size);
 	
 

@@ -36,24 +36,25 @@ int main()
     system("cls");
 
     Cartridge* cart = new Cartridge(fp);
+
+    // Debug tattico
+    std::cout << "Logo corretto: " << cart->CheckLogo();
+    std::cout << "Titolo della cartuccia: " << cart->GetTitle();
+    std::cout << "Codice di licensa: " << cart->GetOldLicenseeCode();
+    std::cout << "Grandezza della ROM: " << cart->GetRomSize();
+    std::cout << "Grandezza della RAM data dalla cartuccia" << cart->GetRamSize();
+    std::cout << "Risultato del checksum: " << cart->ComputeChecksum();
+
     Memory memory(cart->GetData(), cart->GetRamSize());
     cart->~Cartridge();
     
     LR35902 cpu(fp, memory);
     Graphics graphics(memory);
 
-    const int cyclesPerFrame = 70224; // Cicli di clock per frame (4194304 Hz / 60 FPS)
-    int cyclesExecuted = 0;
+   
 
     while (!glfwWindowShouldClose(graphics.window)) {
-        while (cyclesExecuted < cyclesPerFrame) {
-            cyclesExecuted += cpu.CPU_Step();
-            graphics.Update(cyclesExecuted);
-        }
-
-        graphics.RenderPixels();
         glfwPollEvents();
-        cyclesExecuted = 0;
         glfwSwapBuffers(graphics.window);
     }
 

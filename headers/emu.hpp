@@ -6,13 +6,14 @@
 
 //underneath code must be implemented
 
-struct thisEmuContext
+struct emu
 {
     bool pause;
     bool running;
     B64 ticks;
 };
 
+emu thisEmuContext;
 void emu_cycles(int cpu_cycles);
 
 
