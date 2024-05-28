@@ -74,7 +74,7 @@ void LR35902::UpdateFlag(char f, bool state = true)
 		fl.HF = state;
 		break;
 	default:
-		std::cerr << "RunTimeError_FlagNotFound"; // Sembra troppo professionale infatti non lRT_ho scritto io
+		std::cerr << "RunTimeError_FlagNotFound"; // Sembra troppo professionale infatti non l'ho scritto io
 		break;
 	}
 }
