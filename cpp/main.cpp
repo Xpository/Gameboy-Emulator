@@ -46,7 +46,7 @@ int main()
     std::cout << "Grandezza della RAM data dalla cartuccia: " << cart->GetRamSize() << std::endl;
     std::cout << "Risultato del checksum: " << cart->ComputeChecksum() << std::endl;
 
-    Memory memory(cart->GetData(), cart->GetRamSize());
+    Memory memory(cart->GetData(), cart->GetRomSize());
     cart->~Cartridge();
     
     LR35902 cpu(fp, memory);
